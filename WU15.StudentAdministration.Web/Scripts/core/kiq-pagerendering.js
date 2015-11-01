@@ -1,16 +1,18 @@
-﻿    var Utilities = new function Utilities() {
+﻿var Utilities = new function Utilities() {
 
-        Utilities.formToJson = function (form) {
-            var jsonForm = {};
-            $("input", $(form)).each(function (index) {
-                jsonForm[$(this).attr("name")] = this.value;
-            });
+    Utilities.formToJson = function (form) {
+        var jsonForm = {};
+        $("input", $(form)).each(function (index) {
+            jsonForm[$(this).attr("name")] = this.value;
+        });
 
-            return jsonForm;
-        }
-
-        return Utilities;
+        return jsonForm;
     }
+
+    return Utilities;
+}
+
+
 
 var Page = new function Page() {
     var configuration = null;
@@ -20,10 +22,14 @@ var Page = new function Page() {
         configuration = config;
     }
 
-    // Initial rendering.
+    // Initial rendering.                                           initierar genom att kalla på navigate funktionen med "start" som argument
     Page.init = function () {
         Page.navigate("start");
     }
+
+
+
+
 
     // Fetch and display all courses.
     Page.displayDefault = function () {
@@ -41,8 +47,11 @@ var Page = new function Page() {
         }).error(function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.responseText || textStatus);
         });
-
     }
+
+
+
+
 
     // Fetch the data and delegate the rendering of the page.
     Page.displayCourseList = function () {
@@ -63,7 +72,7 @@ var Page = new function Page() {
     }
 
     // Fetch the data and render the page.
-    Page.displayStudentList = function () {               
+    Page.displayStudentList = function () {
 
         var data = {}
         Page.renderStudentList(data);
@@ -73,7 +82,7 @@ var Page = new function Page() {
     Page.renderDefault = function (courses) {
         var view = "";
         configuration.defaultPlaceholder.empty();
-                
+
         var courseIndex = 0;
         for (var contentIndex = 0; contentIndex < courses.length; contentIndex = contentIndex + configuration.numberOfColumnsPerRow) {
             var item = "<div class='row list-item'>";
@@ -102,7 +111,7 @@ var Page = new function Page() {
                 // Students
                 if (courses[courseIndex].students.length > 0) {
                     for (var subIndex = 0; subIndex < courses[courseIndex].students.length; subIndex++) {
-                        item += "<a href='#' class='list-group-item'>" + courses[courseIndex].students[subIndex].firstName + " " + courses[courseIndex].students[subIndex].lastName + "</a>";
+                        item += "<a href='#' class='list-group-item'>" + courses[courseIndex].students[subIndex].firstName + " " + courses[courseIndex].students[subIndex].lastName + "</a>";    
                     }
                 } else {
                     item += "<span class='list-group-item'>Kursen har inga studenter registrerade.</span>";
@@ -143,7 +152,7 @@ var Page = new function Page() {
     Page.renderStudentList = function () {
         configuration.studentListPlaceholder.empty();
 
-        var view = "Student list...";
+        var view = "Student list...";                                         //  Student lista ... Ska läggas till kod så det fungerar
         configuration.studentListPlaceholder.append(view);
 
         configuration.studentListPlaceholder.fadeIn(500);
