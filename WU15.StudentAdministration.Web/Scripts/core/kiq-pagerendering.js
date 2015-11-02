@@ -1,19 +1,4 @@
-﻿var Utilities = new function Utilities() {
-
-    Utilities.formToJson = function (form) {
-        var jsonForm = {};
-        $("input", $(form)).each(function (index) {
-            jsonForm[$(this).attr("name")] = this.value;
-        });
-
-        return jsonForm;
-    }
-
-    return Utilities;
-}
-
-
-
+﻿
 var Page = new function Page() {
     var configuration = null;
 
@@ -74,9 +59,20 @@ var Page = new function Page() {
     // Fetch the data and render the page.
     Page.displayStudentList = function () {
 
-        var data = {}
+
+        $.ajax({
+            type: "GET",
+            url: configuration.studentsUrl,
+            data: { sid: configuration.organizationId }
+        }).done(function (data) {
+            console.log("[Page.displayStudentList]: Number of items returned: " + data.length);
+
+        //var data = {}
         Page.renderStudentList(data);
 
+        }).error(function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.responseText || textStatus);
+        });
     }
 
     Page.renderDefault = function (courses) {
@@ -149,11 +145,28 @@ var Page = new function Page() {
         configuration.courseListPlaceholder.fadeIn(500);
     }
 
-    Page.renderStudentList = function () {
-        configuration.studentListPlaceholder.empty();
 
-        var view = "Student list...";                                         //  Student lista ... Ska läggas till kod så det fungerar
-        configuration.studentListPlaceholder.append(view);
+
+
+
+
+    Page.renderStudentList = function (students) {
+        var tbody = $("#studentListTable tbody");
+        tbody.empty();
+
+        //configuration.studentListPlaceholder.empty();
+
+        var view = "";                                         //  Student lista ... Ska läggas till kod så det fungerar
+
+        for (var index = 0; index < students.length; index++) {
+            view += "<tr>";
+            view += "<td>" + students[index].firstName + "</td>";
+            view += "<td>" + students[index].lastName + "</td>";
+            view += "<td>" + students[index].id + "</td>";
+            view += "</tr>";
+        }
+        tbody.append(view);
+        //configuration.studentListPlaceholder.append(view);
 
         configuration.studentListPlaceholder.fadeIn(500);
     }
