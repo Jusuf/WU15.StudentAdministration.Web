@@ -91,6 +91,14 @@
             e.preventDefault();
         });
 
+        $(".navbar-brand").click(function (e) {
+            $('.navbar li.active').removeClass('active');
+            $('.nav li a[href="#start"]').parent().addClass('active');
+                        
+        });
+
+        
+
         $(".navigation").on("click", function () {
             var panel = this.href.substr(this.href.indexOf("#") + 1);
 
