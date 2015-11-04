@@ -162,7 +162,11 @@ var Page = new function Page() {
             view += "<tr>";
             view += "<td>" + students[index].firstName + "</td>";
             view += "<td>" + students[index].lastName + "</td>";
-            view += "<td>" + students[index].id + "</td>";
+            view += "<td>" + students[index].ssn + "</td>";
+            // view += "<td>" + '<form id="myform">' + '<input class="aiCheckbox" type=checkbox name=vehicle value=Student><span id="spanActive">Aktiv</span>' + "</td>" + '</form>';
+
+            view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' name='studentStatus' value='Student'><span class='spanActive'>Aktiv</span></td>";
+
             view += "</tr>";
         }
         tbody.append(view);

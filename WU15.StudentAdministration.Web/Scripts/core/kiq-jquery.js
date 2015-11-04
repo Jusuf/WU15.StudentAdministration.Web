@@ -4,10 +4,10 @@
         Page.setup({
             organizationId: "c08bdab7-ed3d-4048-8338-d4f14f2770a8",
             numberOfColumnsPerRow: 3,
-            //studentsUrl: "http://localhost:45959/api/students/",
-            //coursesUrl: "http://localhost:45959/api/courses/",
-            studentsUrl: "http://api.wu15.se/api/students/",
-            coursesUrl: "http://api.wu15.se/api/courses/",
+            studentsUrl: "http://localhost:45959/api/students/",
+            coursesUrl: "http://localhost:45959/api/courses/",
+            //studentsUrl: "http://api.wu15.se/api/students/",
+            //coursesUrl: "http://api.wu15.se/api/courses/",
             defaultPlaceholder: $("#defaultPlaceholder"),
             courseDetailsPlaceholder: $("#courseDetailsPlaceholder"),
             courseDetailsStudentListPlaceholder: $("#courseDetailsStudentListPlaceholder"),
@@ -127,5 +127,46 @@
 
         });
 
+        $("#studentTbody").on("change", function (event) {
+
+            
+
+            var studentId = $(event.target).data("studentid");
+            //debugger;
+            var check = null;
+            check = $(event.target).is(":checked");
+
+
+            if (check === true) {
+                console.log("Checked");
+                var span = $(event.target.nextElementSibling);
+                span.text("Inaktiv");
+                span.removeClass("spanActive");
+                span.addClass("spanInactive");
+
+
+            } else {
+
+                console.log("Unchecked");
+                var span = $(event.target.nextElementSibling);
+                span.text("Aktiv");
+                span.removeClass("spanInactive");
+                span.addClass("spanActive");
+                
+            }
+            
+        });
+
     });
+
+
+
+
+
+
+   
+        
+
+        
+    
 

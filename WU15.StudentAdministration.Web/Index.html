@@ -189,17 +189,54 @@
             <div class="panel panel-default">
                 <div class="panel-heading" style="overflow: auto">
                     <div style="float: left; overflow: auto">Studenter</div>
-                    <div style="float: right; overflow: auto">+</div>
+                    <div style="float: right; overflow: auto">Lägg till student</div>
                 </div>
+
+
+
+
+
+                <div class="panel-body">
+                    <form id="courseListAddCourseForm">
+                        <input type="hidden" name="id" value="0" />
+                        <input type="hidden" name="schoolNo" value="c08bdab7-ed3d-4048-8338-d4f14f2770a8" />
+
+                        <div class="form-group form-input-container" style="float: left;">
+                            <label>Förnamn</label>
+                            <br />
+                            <input type="text" name="name" class="form-control" />
+                        </div>
+
+                        <div class="form-group form-input-container" style="float: left;">
+                            <label>Efternamn</label>
+                            <br />
+                            <input type="text" name="credits" class="form-control" />
+                        </div>
+
+                        <div class="form-group form-input-container" style="float: left;">
+                            <label>Personnummer</label>
+                            <br />
+                            <input type="text" name="year" class="form-control" />
+                        </div>
+
+                        <div class="form-group form-input-container" style="float: left;">
+                            <label>&nbsp;</label>
+                            <br />
+                            <button type="submit" class="btn btn-success">Spara</button>
+                        </div>
+                    </form>
+                </div>
+
                 <table id="studentListTable" class="table">
                     <thead>
                         <tr>
                             <th>Namn</th>
                             <th>Efternamn</th>
-                            <th>Id</th>
+                            <th>Personnummer</th>
+                            <th>Aktivera/Avaktivera Student</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="studentTbody">
                         <!-- Content rows -->
                     </tbody>
                 </table>

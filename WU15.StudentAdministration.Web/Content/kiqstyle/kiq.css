@@ -89,3 +89,10 @@
     height: 34px;
     width: 175px;
 }
+.spanActive{
+    padding-left: 20px;
+    color:green;
+}.spanInactive{
+    padding-left: 20px;
+    color:red;
+}
