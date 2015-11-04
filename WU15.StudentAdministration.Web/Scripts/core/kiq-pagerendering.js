@@ -13,9 +13,6 @@ var Page = new function Page() {
     }
 
 
-
-
-
     // Fetch and display all courses.
     Page.displayDefault = function () {
         configuration.courseDetailsPlaceholder.hide();
@@ -33,9 +30,6 @@ var Page = new function Page() {
             console.log(jqXHR.responseText || textStatus);
         });
     }
-
-
-
 
 
     // Fetch the data and delegate the rendering of the page.
@@ -144,10 +138,6 @@ var Page = new function Page() {
 
         configuration.courseListPlaceholder.fadeIn(500);
     }
-
-
-
-
 
 
     Page.renderStudentList = function (students) {
@@ -351,6 +341,44 @@ var Page = new function Page() {
 
         return course;
     }
+
+    Page.getStudentTemplate = function () {
+        var student = {
+            id: 0,
+            name: "",
+            lastname: "",
+            ssn: "",
+            schoolNo: configuration.organizationId,
+            //students: []
+        }
+
+        return student;
+    }
+
+    Page.saveStudentDetails = function (student) {
+
+        $.ajax({
+            url: configuration.studentsUrl,
+            type: "POST",
+            data: JSON.stringify(student),
+            contentType: "application/json",
+            success: function (data, textStatus, jqXHR) {
+                console.log("[Page.saveStudentDetails.success]: Results: " + data);
+
+                // Brodcast student added event.
+                $.event.trigger({
+                    type: "studentSavedCustomEvent",
+                    message: { description: "Saved a student.", data: student },
+                    time: new Date()
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+            }
+        });
+
+    }
+
+
 
     Page.registerSelectedStudent = function () {
         var selectedStudentOption

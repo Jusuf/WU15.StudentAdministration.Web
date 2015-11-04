@@ -58,6 +58,18 @@
             Page.saveCourseAndDisplayDefault(course);
         });
 
+        // Save the student details.
+        $("#studentListForm").submit(function (event) {
+            event.preventDefault();
+            console.log("[studentDetailsForm.submit]: Submitted course details form.");
+
+            var student = Utilities.formToJson(this);
+            
+            debugger;
+
+            Page.saveStudentDetails(student);
+        });
+        
         // Remove a registered student.
         $("#courseDetailsStudentListPlaceholder").on("click", ".remove-registered-student", function (event) {
             var item = $(this).closest(".list-group-item")[0];
@@ -97,8 +109,6 @@
                         
         });
 
-        
-
         $(".navigation").on("click", function () {
             var panel = this.href.substr(this.href.indexOf("#") + 1);
 
@@ -127,6 +137,16 @@
 
         });
 
+        $(document).on("studentSavedCustomEvent", function (event) {
+            console.log("[studentSavedCustomEvent]: " + event.message.description);
+            console.log("[studentSavedCustomEvent]: " + event.message.data);
+
+            Page.displayStudentList();
+
+        });
+
+
+        // Checkbox event
         $("#studentTbody").on("change", function (event) {
 
             
