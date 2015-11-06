@@ -149,33 +149,58 @@
         // Checkbox event
         $("#studentTbody").on("change", function (event) {
 
-            
-
-            var studentId = $(event.target).data("studentid");
+           var studentId = $(event.target).data("studentid");
             //debugger;
             var check = null;
             check = $(event.target).is(":checked");
 
-
             if (check === true) {
-                console.log("Checked");
+                console.log("Checked " + studentId);
                 var span = $(event.target.nextElementSibling);
                 span.text("Inaktiv");
                 span.removeClass("spanActive");
                 span.addClass("spanInactive");
-
-
             } else {
 
-                console.log("Unchecked");
+                console.log("Unchecked " + studentId);
                 var span = $(event.target.nextElementSibling);
                 span.text("Aktiv");
                 span.removeClass("spanInactive");
                 span.addClass("spanActive");
-                
-            }
+
+            };
             
         });
+
+        // Edit student event
+        $("#studentTbody").on("click", function (event) {
+            
+            var clickedId = $(event.target).data("editid");
+
+            var editClick = null;
+
+            editClick = $(event.target).hasClass("glyphicon-edit");
+            
+            
+            
+            if (editClick === true) {
+                console.log("Clicked Id " + clickedId);
+                
+                
+                Page.displayStudentInEditBox(clickedId);
+
+
+                //$("input[name$='firstName']").val(student);
+                //debugger;
+            } else {
+
+                console.log("Missed");
+                
+            };
+        });
+
+        
+
 
     });
 

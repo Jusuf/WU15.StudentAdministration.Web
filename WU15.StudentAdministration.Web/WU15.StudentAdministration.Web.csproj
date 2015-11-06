@@ -164,6 +164,7 @@
     <None Include="Properties\PublishProfiles\api.wu15.se.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\core\json-utilities.js" />
+    <Content Include="Scripts\core\kiq-editstudent.js" />
     <Content Include="Scripts\core\kiq-jquery.js" />
     <Content Include="Scripts\core\kiq-pagerendering.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />

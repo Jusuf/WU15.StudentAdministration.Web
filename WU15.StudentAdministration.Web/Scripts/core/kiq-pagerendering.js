@@ -144,20 +144,18 @@ var Page = new function Page() {
         var tbody = $("#studentListTable tbody");
         tbody.empty();
 
-        //configuration.studentListPlaceholder.empty();
-
-        var view = "";                                         //  Student lista ... Ska läggas till kod så det fungerar
+        var view = "";                                         
 
         for (var index = 0; index < students.length; index++) {
             view += "<tr>";
             view += "<td>" + students[index].firstName + "</td>";
             view += "<td>" + students[index].lastName + "</td>";
             view += "<td>" + students[index].ssn + "</td>";
-            // view += "<td>" + '<form id="myform">' + '<input class="aiCheckbox" type=checkbox name=vehicle value=Student><span id="spanActive">Aktiv</span>' + "</td>" + '</form>';
 
-            view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' name='studentStatus' value='Student'><span class='spanActive'>Aktiv</span></td>";
+            view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' name='studentStatus' value='Student'><span class='spanActive'>Aktiv</span><span data-editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
 
             view += "</tr>";
+
         }
         tbody.append(view);
         //configuration.studentListPlaceholder.append(view);
@@ -450,6 +448,43 @@ var Page = new function Page() {
     Page.deselectMenu = function () {
 
         $('.navbar li.active').removeClass('active');
+    }
+
+
+
+
+    Page.displayStudentInEditBox = function (id) {
+
+        $.ajax({
+                type: "GET",
+                url: configuration.studentsUrl,
+                data: { sid: configuration.organizationId }
+            }).done(function (data) {
+                console.log("[Page.displayStudentList]: Number of items returned: " + data.length);
+
+                //var data = {}
+                Page.editStudent(data, id);
+
+            }).error(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.responseText || textStatus);
+            });
+        }
+
+    Page.editStudent = function (students, id) {
+        for (var index = 0; index < id; index++) {
+            if (id === students[index].id) {
+                console.log(students[index]);
+                //return students[index];
+                $("input[name$='firstName']").val(students[index].firstName);
+                $("input[name$='lastName']").val(students[index].lastName);
+                $("input[name$='ssn']").val(students[index].ssn);
+                $("input[name$='id']").val(students[index].id);
+
+            } else {
+                console.log("fel");
+            }
+           
+        }
     }
 
     return Page;
