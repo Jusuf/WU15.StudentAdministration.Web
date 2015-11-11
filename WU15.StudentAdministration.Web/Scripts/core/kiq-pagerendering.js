@@ -60,10 +60,11 @@ var Page = new function Page() {
             data: { sid: configuration.organizationId }
         }).done(function (data) {
             console.log("[Page.displayStudentList]: Number of items returned: " + data.length);
+                       
+        var sortedData = sortByStudentName(data);
 
-        //var data = {}
-        Page.renderStudentList(data);
-
+        Page.renderStudentList(sortedData);
+        debugger;
         }).error(function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.responseText || textStatus);
         });
@@ -101,7 +102,7 @@ var Page = new function Page() {
                 // Students
                 if (courses[courseIndex].students.length > 0) {
                     for (var subIndex = 0; subIndex < courses[courseIndex].students.length; subIndex++) {
-                        item += "<a href='#' class='list-group-item'>" + courses[courseIndex].students[subIndex].firstName + " " + courses[courseIndex].students[subIndex].lastName + "</a>";    
+                        item += "<a href='#' class='list-group-item'>" + courses[courseIndex].students[subIndex].firstName + " " + courses[courseIndex].students[subIndex].lastName + "<span class='ssnDefaultView'>" + courses[courseIndex].students[subIndex].ssn + "</span></a>";
                     }
                 } else {
                     item += "<span class='list-group-item'>Kursen har inga studenter registrerade.</span>";
@@ -216,13 +217,20 @@ var Page = new function Page() {
                     + course.students[index].firstName
                     + "' data-last-name='"
                     + course.students[index].lastName
+                    + "' data-ssn='"
+                    + course.students[index].ssn
                     + "'>"
                     + course.students[index].firstName
                     + " "
                     + course.students[index].lastName
-
+                    + "<div class='inline-registred-student'> "
+                    + "<span class='ssnSpace'>" + course.students[index].ssn + "</span>"
+                    
+                   
                     // Render the trash can, the remove student button.
-                    + "<span class='pull-right'><button class='remove-registered-student btn btn-xs btn-warning'><span class='glyphicon glyphicon-trash'></span></button></span>"
+                    + "<span class='pull-right'><button class='remove-registered-student btn btn-xs btn-warning'><span class='glyphicon glyphicon-trash'></span></button></span></div>"
+
+                     
 
                     + "</div>");
             }
@@ -253,13 +261,17 @@ var Page = new function Page() {
     }
 
     Page.appendStudentSelectOption = function (student) {
-        var name = student.firstName + " " + student.lastName;
+        var name = "<span class='name-dropdown-list'>" + student.firstName + " " + student.lastName + "</span>" 
+        + "   " + "<span class='ssn-dropdown-list'>" + student.ssn + "</span>";  
+
         configuration.courseDetailsStudentSelectList.append(
             $("<option />")
-            .text(name)
+            //.text(name)
+            .html(name)
             .attr("data-id", student.id)
             .attr("data-first-name", student.firstName)
-            .attr("data-last-name", student.lastName));
+            .attr("data-last-name", student.lastName)
+            .attr("data-ssn", student.ssn));
     }
 
     // Saves a course and displays the default view.
@@ -274,7 +286,7 @@ var Page = new function Page() {
                 console.log("[Page.saveCourseAndDisplayDefault.success]: Results: " + data);
 
                 // De-scelect the top menu button.
-                Page.deselectMenu();
+                //Page.deselectMenu();
 
                 // Display the default contents.
                 Page.displayDefault();
@@ -317,13 +329,18 @@ var Page = new function Page() {
                     + student.firstName
                     + "' data-last-name='"
                     + student.lastName
+                    + "' data-last-name='"
+                    + student.ssn
                     + "'>"
                     + student.firstName
                     + " "
                     + student.lastName
+                    + " "
+                    + "<div class='inline-registred-student'>"
+                    + "<span class='ssnSpace'>" + student.ssn + "</span>"
 
                     // Render the trash can remove student button.
-                    + "<span class='pull-right'><button class='remove-registered-student btn btn-xs btn-warning'><span class='glyphicon glyphicon-trash'></span></button></span>"
+                    + "<span class='pull-right'><button class='remove-registered-student btn btn-xs btn-warning'><span class='glyphicon glyphicon-trash'></span></button></span></div>"
 
                     + "</div>");
     }
@@ -386,7 +403,8 @@ var Page = new function Page() {
         var id = selectedStudentOption.data("id");
         var firstName = selectedStudentOption.data("firstName");
         var lastName = selectedStudentOption.data("lastName");
-        var student = { id: id, firstName: firstName, lastName: lastName }
+        var ssn = selectedStudentOption.data("ssn")
+        var student = { id: id, firstName: firstName, lastName: lastName, ssn: ssn }
         selectedStudentOption.remove();
 
         // Remove the empty list default text.
@@ -485,6 +503,7 @@ var Page = new function Page() {
             }
            
         }
+
     }
 
     return Page;

@@ -65,7 +65,7 @@
 
             var student = Utilities.formToJson(this);
             
-            debugger;
+            //debugger;
 
             Page.saveStudentDetails(student);
         });
@@ -78,7 +78,8 @@
             var id = $(item).data("id");
             var firstName = $(item).data("firstName");
             var lastName = $(item).data("lastName");
-            var student = { id: id, firstName: firstName, lastName: lastName }
+            var ssn = $(item).data("ssn");
+            var student = { id: id, firstName: firstName, lastName: lastName, ssn: ssn}
             Page.appendStudentSelectOption(student);
 
             // Remove from the registered list.
@@ -181,16 +182,12 @@
 
             editClick = $(event.target).hasClass("glyphicon-edit");
             
-            
-            
             if (editClick === true) {
+
                 console.log("Clicked Id " + clickedId);
                 
-                
                 Page.displayStudentInEditBox(clickedId);
-
-
-                //$("input[name$='firstName']").val(student);
+                
                 //debugger;
             } else {
 
