@@ -41,7 +41,7 @@ namespace WU15.StudentAdministration.Web
 
             Courses = new List<Course>();
             Students = new List<Student>();
-            //LoadStudents();
+            LoadStudents();
             LoadCourses();
         }
 

@@ -7,13 +7,12 @@ var Page = new function Page() {
         configuration = config;
     }
 
-    // Initial rendering.                                           initierar genom att kalla på navigate funktionen med "start" som argument
+    // Initial rendering.                                           
     Page.init = function () {
         Page.navigate("start");
     }
-
-
-    // Fetch and display all courses.
+    
+    // Fetch and display all courses in default view.
     Page.displayDefault = function () {
         configuration.courseDetailsPlaceholder.hide();
 
@@ -23,14 +22,15 @@ var Page = new function Page() {
             data: { sid: configuration.organizationId }
         }).done(function (data) {
 
+            var sortedData = sortByCourseName(data);
+            
             // Render the courses.
-            Page.renderDefault(data);
+            Page.renderDefault(sortedData);
 
         }).error(function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.responseText || textStatus);
         });
     }
-
 
     // Fetch the data and delegate the rendering of the page.
     Page.displayCourseList = function () {
@@ -41,9 +41,10 @@ var Page = new function Page() {
             data: { sid: configuration.organizationId }
         }).done(function (data) {
             console.log("[Page.displayCourseList]: Number of items returned: " + data.length);
-
+            var sortedCourses = sortByCourseName(data);
             // Render the courses.
-            Page.renderCourseList(data);
+
+            Page.renderCourseList(sortedCourses);
 
         }).error(function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.responseText || textStatus);
@@ -64,7 +65,7 @@ var Page = new function Page() {
         var sortedData = sortByStudentName(data);
 
         Page.renderStudentList(sortedData);
-        debugger;
+        
         }).error(function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.responseText || textStatus);
         });
@@ -73,6 +74,8 @@ var Page = new function Page() {
     Page.renderDefault = function (courses) {
         var view = "";
         configuration.defaultPlaceholder.empty();
+
+
 
         var courseIndex = 0;
         for (var contentIndex = 0; contentIndex < courses.length; contentIndex = contentIndex + configuration.numberOfColumnsPerRow) {
@@ -91,7 +94,7 @@ var Page = new function Page() {
             var bootstrapColumns = 12 / configuration.numberOfColumnsPerRow;
             for (; courseIndex < (tempCourseIndex) ; courseIndex++) {
                 item += "<div class='col-md-" + bootstrapColumns + "'>";
-                item += "<div class='list-group'>";
+                item += "<div class='list-group sortByName'>";
                 item += "<a href='#' class='list-group-item active data-course-item' data-item-id='"
                     + courses[courseIndex].id + "'>"
                     + "<span class='list-group-addon glyphicon glyphicon-edit'></span>&nbsp;" // The edit icon.
@@ -102,7 +105,12 @@ var Page = new function Page() {
                 // Students
                 if (courses[courseIndex].students.length > 0) {
                     for (var subIndex = 0; subIndex < courses[courseIndex].students.length; subIndex++) {
-                        item += "<a href='#' class='list-group-item'>" + courses[courseIndex].students[subIndex].firstName + " " + courses[courseIndex].students[subIndex].lastName + "<span class='ssnDefaultView'>" + courses[courseIndex].students[subIndex].ssn + "</span></a>";
+
+                        //Sort students by firstname
+                        var sortedByName = sortByStudentName(courses[courseIndex].students);
+
+                        item += "<a href='#' class='list-group-item studentName'>" + sortedByName[subIndex].firstName + " " + courses[courseIndex].students[subIndex].lastName + "<span class='ssnDefaultView'>" + courses[courseIndex].students[subIndex].ssn + "</span></a>";
+                        
                     }
                 } else {
                     item += "<span class='list-group-item'>Kursen har inga studenter registrerade.</span>";
@@ -114,8 +122,10 @@ var Page = new function Page() {
 
             item += "</div>";
             view += item;
+                                               
         }
-
+               
+        
         // Append the html content to the div.
         configuration.defaultPlaceholder.append(view);
 
@@ -139,7 +149,6 @@ var Page = new function Page() {
 
         configuration.courseListPlaceholder.fadeIn(500);
     }
-
 
     Page.renderStudentList = function (students) {
         var tbody = $("#studentListTable tbody");
@@ -171,9 +180,7 @@ var Page = new function Page() {
             type: "GET",
             url: configuration.coursesUrl + id
         }).done(function (data) {
-
             console.log(data);
-
             Page.renderCourseDetails(data);
 
         }).error(function (jqXHR, textStatus, errorThrown) {
@@ -210,11 +217,14 @@ var Page = new function Page() {
         configuration.courseDetailsStudentListPlaceholder.empty();
         if (course.students.length) {
             for (var index = 0; index < course.students.length; index++) {
+
+                var sortedByName = sortByStudentName(course.students);
+
                 configuration.courseDetailsStudentListPlaceholder.append(
                     "<div class='list-group-item registered-student' data-id='"
                     + course.students[index].id
                     + "' data-first-name='"
-                    + course.students[index].firstName
+                    + sortedByName[index].firstName 
                     + "' data-last-name='"
                     + course.students[index].lastName
                     + "' data-ssn='"
@@ -248,10 +258,12 @@ var Page = new function Page() {
             url: configuration.studentsUrl,
             data: { sid: configuration.organizationId }
         }).done(function (data) {
+            
+            var sortedData = sortByStudentName(data);
 
             configuration.courseDetailsStudentSelectList.empty();
-            $.each(data, function () {
-                Page.appendStudentSelectOption(this);
+            $.each(sortedData, function () {
+                Page.appendStudentSelectOption(this);   //this as argument?
             });
 
         }).error(function (jqXHR, textStatus, errorThrown) {
@@ -261,13 +273,12 @@ var Page = new function Page() {
     }
 
     Page.appendStudentSelectOption = function (student) {
-        var name = "<span class='name-dropdown-list'>" + student.firstName + " " + student.lastName + "</span>" 
-        + "   " + "<span class='ssn-dropdown-list'>" + student.ssn + "</span>";  
+        var name = student.firstName + " " + student.lastName 
+        + "   " +  student.ssn ;  
 
         configuration.courseDetailsStudentSelectList.append(
             $("<option />")
-            //.text(name)
-            .html(name)
+            .text(name)
             .attr("data-id", student.id)
             .attr("data-first-name", student.firstName)
             .attr("data-last-name", student.lastName)
@@ -322,27 +333,32 @@ var Page = new function Page() {
     }
 
     Page.appendStudentToList = function (student) {
-        configuration.courseDetailsStudentListPlaceholder.append(
-                    "<div class='list-group-item registered-student' data-id='"
-                    + student.id
-                    + "' data-first-name='"
-                    + student.firstName
-                    + "' data-last-name='"
-                    + student.lastName
-                    + "' data-last-name='"
-                    + student.ssn
-                    + "'>"
-                    + student.firstName
-                    + " "
-                    + student.lastName
-                    + " "
-                    + "<div class='inline-registred-student'>"
-                    + "<span class='ssnSpace'>" + student.ssn + "</span>"
 
-                    // Render the trash can remove student button.
-                    + "<span class='pull-right'><button class='remove-registered-student btn btn-xs btn-warning'><span class='glyphicon glyphicon-trash'></span></button></span></div>"
+        if (student.id === undefined) {
+            alert("OBS!!! Student listan är tom");
+        } else {
+            configuration.courseDetailsStudentListPlaceholder.append(
+                        "<div class='list-group-item registered-student' data-id='"
+                        + student.id
+                        + "' data-first-name='"
+                        + student.firstName
+                        + "' data-last-name='"
+                        + student.lastName
+                        + "' data-last-name='"
+                        + student.ssn
+                        + "'>"
+                        + student.firstName
+                        + " "
+                        + student.lastName
+                        + " "
+                        + "<div class='inline-registred-student'>"
+                        + "<span class='ssnSpace'>" + student.ssn + "</span>"
 
-                    + "</div>");
+                        // Render the trash can remove student button.
+                        + "<span class='pull-right'><button class='remove-registered-student btn btn-xs btn-warning'><span class='glyphicon glyphicon-trash'></span></button></span></div>"
+
+                        + "</div>");
+        }
     }
 
     Page.getCourseTemplate = function () {
