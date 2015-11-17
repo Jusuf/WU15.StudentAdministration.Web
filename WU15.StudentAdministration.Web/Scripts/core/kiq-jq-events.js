@@ -21,10 +21,15 @@
 
         // Display course details for clicked course.
         $("#defaultPlaceholder").on("click", ".list-item", function (event) {
-            var id = $(event.target).data("itemId");
-            console.log("[#defaultPlaceholder.click]: Course list clicked: " + id);
+            var courseDefaultView = null;
+            courseDefaultView = $(event.target).hasClass("list-group-addon");
+            if (courseDefaultView) {
 
-            Page.displayCourseDetails(id);
+                var id = $(event.target).data("itemId");
+                console.log("[#defaultPlaceholder.click]: Course list clicked: " + id);
+
+                Page.displayCourseDetails(id);
+            }
         });
 
         // Cancel the course details view.

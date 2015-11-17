@@ -71,6 +71,7 @@ var Page = new function Page() {
         });
     }
 
+    // Start/default page rendering and bootstrap setup
     Page.renderDefault = function (courses) {
         var view = "";
         configuration.defaultPlaceholder.empty();
@@ -95,9 +96,9 @@ var Page = new function Page() {
             for (; courseIndex < (tempCourseIndex) ; courseIndex++) {
                 item += "<div class='col-md-" + bootstrapColumns + "'>";
                 item += "<div class='list-group sortByName'>";
-                item += "<a href='#' class='list-group-item active data-course-item' data-item-id='"
-                    + courses[courseIndex].id + "'>"
-                    + "<span class='list-group-addon glyphicon glyphicon-edit'></span>&nbsp;" // The edit icon.
+                item += "<a href='#' class='list-group-item active data-course-item'>"
+                    + "<span class='list-group-addon glyphicon glyphicon-edit' data-item-id='"
+                    + courses[courseIndex].id + "'></span>&nbsp;" // The edit icon.
                     + courses[courseIndex].name
                     + "</a>";
                 item += "<p class='list-group-item course-item-info'>Kursstart " + courses[courseIndex].term + " " + courses[courseIndex].year + "</p>";
