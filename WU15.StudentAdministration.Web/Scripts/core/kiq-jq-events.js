@@ -144,10 +144,12 @@
 
             Page.displayStudentList();
 
+            cleareditStudentBox();
+            
         });
 
 
-        // Checkbox event
+        // Checkbox event student status Active/Inactive
         $("#studentTbody").on("change", function (event) {
 
            var studentId = $(event.target).data("studentid");
@@ -161,6 +163,11 @@
                 span.text("Inaktiv");
                 span.removeClass("spanActive");
                 span.addClass("spanInactive");
+                
+                var status = false;
+                Page.changeStudentStatusValue(studentId, status);
+                
+
             } else {
 
                 console.log("Unchecked " + studentId);
@@ -168,7 +175,10 @@
                 span.text("Aktiv");
                 span.removeClass("spanInactive");
                 span.addClass("spanActive");
-
+                
+                var status = true;
+                Page.changeStudentStatusValue(studentId, status);
+                
             };
             
         });
@@ -195,12 +205,7 @@
                 
             };
         });
-
-
-       
-
         
-
 
     });
 

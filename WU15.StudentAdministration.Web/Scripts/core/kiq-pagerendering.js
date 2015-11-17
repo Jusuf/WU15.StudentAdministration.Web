@@ -157,14 +157,25 @@ var Page = new function Page() {
         var view = "";                                         
 
         for (var index = 0; index < students.length; index++) {
-            view += "<tr>";
-            view += "<td>" + students[index].firstName + "</td>";
-            view += "<td>" + students[index].lastName + "</td>";
-            view += "<td>" + students[index].ssn + "</td>";
+            if (students[index].active === false) {
+                view += "<tr>";
+                view += "<td>" + students[index].firstName + "</td>";
+                view += "<td>" + students[index].lastName + "</td>";
+                view += "<td>" + students[index].ssn + "</td>";
 
-            view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' name='studentStatus' value='Student'><span class='spanActive'>Aktiv</span><span data-editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
+                view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' checked='' name='studentStatus' value='Student' ><span class='spanInactive'>Inaktiv</span><span data-editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
 
-            view += "</tr>";
+                view += "</tr>";
+            } else {
+                view += "<tr>";
+                view += "<td>" + students[index].firstName + "</td>";
+                view += "<td>" + students[index].lastName + "</td>";
+                view += "<td>" + students[index].ssn + "</td>";
+
+                view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' name='studentStatus' value='Student' ><span class='spanActive'>Aktiv</span><span data-editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
+
+                view += "</tr>";
+            }
 
         }
         tbody.append(view);
@@ -235,12 +246,10 @@ var Page = new function Page() {
                     + course.students[index].lastName
                     + "<div class='inline-registred-student'> "
                     + "<span class='ssnSpace'>" + course.students[index].ssn + "</span>"
-                    
                    
                     // Render the trash can, the remove student button.
-                    + "<span class='pull-right'><button class='remove-registered-student btn btn-xs btn-warning'><span class='glyphicon glyphicon-trash'></span></button></span></div>"
-
-                     
+                    + "<span class='pull-right'><button class='remove-registered-student btn btn-xs btn-warning'>"
+                    + "<span class='glyphicon glyphicon-trash'></span></button></span></div>"
 
                     + "</div>");
             }
@@ -379,6 +388,7 @@ var Page = new function Page() {
             name: "",
             lastname: "",
             ssn: "",
+            active: null,
             schoolNo: configuration.organizationId,
             //students: []
         }
@@ -406,10 +416,8 @@ var Page = new function Page() {
             error: function (jqXHR, textStatus, errorThrown) {
             }
         });
-
+        
     }
-
-
 
     Page.registerSelectedStudent = function () {
         var selectedStudentOption
@@ -443,6 +451,7 @@ var Page = new function Page() {
                 configuration.courseDetailsPlaceholder.hide();
                 configuration.courseListPlaceholder.hide();
                 configuration.studentListPlaceholder.hide();
+                cleareditStudentBox();
 
                 Page.displayDefault();
 
@@ -451,6 +460,7 @@ var Page = new function Page() {
                 configuration.courseDetailsPlaceholder.hide();
                 configuration.defaultPlaceholder.hide();
                 configuration.studentListPlaceholder.hide();
+                cleareditStudentBox();
 
                 Page.displayCourseList();
 
@@ -459,6 +469,7 @@ var Page = new function Page() {
                 configuration.courseDetailsPlaceholder.hide();
                 configuration.defaultPlaceholder.hide();
                 configuration.courseListPlaceholder.hide();
+                cleareditStudentBox();
 
                 Page.displayStudentList();
 
@@ -468,6 +479,7 @@ var Page = new function Page() {
                 configuration.defaultPlaceholder.hide();
                 configuration.courseListPlaceholder.hide();
                 configuration.studentListPlaceholder.hide();  //La till 151028 Bug fix
+                cleareditStudentBox();
 
                 var course = Page.getCourseTemplate();
                 Page.renderCourseDetails(course);
@@ -484,44 +496,81 @@ var Page = new function Page() {
         $('.navbar li.active').removeClass('active');
     }
 
-
-
-
     Page.displayStudentInEditBox = function (id) {
 
         $.ajax({
                 type: "GET",
-                url: configuration.studentsUrl,
+                url: configuration.studentsUrl + id,
                 data: { sid: configuration.organizationId }
             }).done(function (data) {
                 console.log("[Page.displayStudentList]: Number of items returned: " + data.length);
 
                 //var data = {}
-                Page.editStudent(data, id);
+                Page.editStudent(data);
 
             }).error(function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR.responseText || textStatus);
             });
         }
 
-    Page.editStudent = function (students, id) {
-        for (var index = 0; index < id; index++) {
-            if (id === students[index].id) {
-                console.log(students[index]);
+    Page.editStudent = function (student) {
+       
                 //return students[index];
-                $("input[name$='firstName']").val(students[index].firstName);
-                $("input[name$='lastName']").val(students[index].lastName);
-                $("input[name$='ssn']").val(students[index].ssn);
-                $("input[name$='id']").val(students[index].id);
+                $("input[name$='firstName']").val(student.firstName);
+                $("input[name$='lastName']").val(student.lastName);
+                $("input[name$='ssn']").val(student.ssn);
+                $("input[name$='id']").val(student.id);
+                $("input[name$='active']").val(student.active);
 
-            } else {
-                console.log("fel");
-            }
+          
            
-        }
+        
 
     }
 
+    Page.changeStudentStatusValue = function (id, status) {
+
+        $.ajax({
+            type: "GET",
+            url: configuration.studentsUrl + id,
+            data: { sid: configuration.organizationId }
+        }).done(function (data) {
+            console.log("[Page.displayStudentList]: Number of items returned: " + data.length);
+
+            var student = data;
+            student.active = status;
+
+            //debugger;
+            Page.saveStudentActiveStatusDetails(student);
+            
+
+        }).error(function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.responseText || textStatus);
+        });
+
+        
+    }
+
+    Page.saveStudentActiveStatusDetails = function (student) {
+
+        $.ajax({
+            url: configuration.studentsUrl,
+            type: "POST",
+            data: JSON.stringify(student),
+            contentType: "application/json",
+            success: function (data, textStatus, jqXHR) {
+                console.log("[Page.saveStudentActiveDetails.success]: Results: " + data);
+                
+            Page.displayStudentList();
+            cleareditStudentBox();
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+            }
+        });
+
+    }
+    
     return Page;
 }
 

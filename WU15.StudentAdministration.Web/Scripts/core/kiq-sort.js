@@ -12,7 +12,7 @@ sortByStudentName = function (students) {
     return sortedStudents;
 };
 
-//Sort by course name in course view function
+//Sort by course name function
 sortByCourseName = function (courses) {
     sortedCourses = courses.sort(function (a, b) {
         if (a.name < b.name)
@@ -24,6 +24,14 @@ sortByCourseName = function (courses) {
 
 )
     return sortedCourses;
+};
+
+cleareditStudentBox = function () {
+    $("input[name$='firstName']").val("");
+    $("input[name$='lastName']").val("");
+    $("input[name$='ssn']").val("");
+    $("input[name$='id']").val(null);
+    $("input[name$='active']").val(null);
 };
 
 

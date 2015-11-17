@@ -42,7 +42,7 @@ namespace WU15.StudentAdministration.Web.API
                 var savedIndex = MvcApplication.Students.FindIndex(x => x.Id == student.Id);
                 MvcApplication.Students.RemoveAt(savedIndex);
             }
-            //MvcApplication.Students.Add(student);
+            MvcApplication.Students.Add(student);
 
             return string.Format("{0} {1}", student.FirstName, student.LastName);
         }
