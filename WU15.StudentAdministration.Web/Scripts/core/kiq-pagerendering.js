@@ -106,11 +106,15 @@ var Page = new function Page() {
                 if (courses[courseIndex].students.length > 0) {
                     for (var subIndex = 0; subIndex < courses[courseIndex].students.length; subIndex++) {
 
-                        //Sort students by firstname
+                        // Sort students by firstname
                         var sortedByName = sortByStudentName(courses[courseIndex].students);
 
-                        item += "<a href='#' class='list-group-item studentName'>" + sortedByName[subIndex].firstName + " " + courses[courseIndex].students[subIndex].lastName + "<span class='ssnDefaultView'>" + courses[courseIndex].students[subIndex].ssn + "</span></a>";
-                        
+                        // Displays active/inactive students
+                        if (sortedByName[subIndex].active) {
+                            item += "<a href='#' class='list-group-item studentName'>" + sortedByName[subIndex].firstName + " " + courses[courseIndex].students[subIndex].lastName + "<span class='ssnDefaultView'>" + courses[courseIndex].students[subIndex].ssn + "</span></a>";
+                        } else {
+                            item += "<a href='#' class='list-group-item inactiveStudent studentName'>" + sortedByName[subIndex].firstName + " " + courses[courseIndex].students[subIndex].lastName + "<span class='ssnDefaultView'>" + courses[courseIndex].students[subIndex].ssn + "</span></a>";
+                        }
                     }
                 } else {
                     item += "<span class='list-group-item'>Kursen har inga studenter registrerade.</span>";
@@ -223,7 +227,7 @@ var Page = new function Page() {
         // Display the details panel.
         configuration.courseDetailsPlaceholder.fadeIn(500);
     }
-
+    //Reder course details studentlist with active/inactive students.
     Page.renderCourseDetailsStudentList = function (course) {
         configuration.courseDetailsStudentListPlaceholder.empty();
         if (course.students.length) {
@@ -231,27 +235,53 @@ var Page = new function Page() {
 
                 var sortedByName = sortByStudentName(course.students);
 
-                configuration.courseDetailsStudentListPlaceholder.append(
-                    "<div class='list-group-item registered-student' data-id='"
-                    + course.students[index].id
-                    + "' data-first-name='"
-                    + sortedByName[index].firstName 
-                    + "' data-last-name='"
-                    + course.students[index].lastName
-                    + "' data-ssn='"
-                    + course.students[index].ssn
-                    + "'>"
-                    + course.students[index].firstName
-                    + " "
-                    + course.students[index].lastName
-                    + "<div class='inline-registred-student'> "
-                    + "<span class='ssnSpace'>" + course.students[index].ssn + "</span>"
-                   
-                    // Render the trash can, the remove student button.
-                    + "<span class='pull-right'><button class='remove-registered-student btn btn-xs btn-warning'>"
-                    + "<span class='glyphicon glyphicon-trash'></span></button></span></div>"
+                // Show student in list if active
+                if (sortedByName[index].active) {
 
-                    + "</div>");
+                    configuration.courseDetailsStudentListPlaceholder.append(
+                        "<div class='list-group-item registered-student' data-id='"
+                        + course.students[index].id
+                        + "' data-first-name='"
+                        + sortedByName[index].firstName
+                        + "' data-last-name='"
+                        + course.students[index].lastName
+                        + "' data-ssn='"
+                        + course.students[index].ssn
+                        + "'>"
+                        + course.students[index].firstName
+                        + " "
+                        + course.students[index].lastName
+                        + "<div class='inline-registred-student'> "
+                        + "<span class='ssnSpace'>" + course.students[index].ssn + "</span>"
+
+                        // Render the trash can, the remove student button.
+                        + "<span class='pull-right'><button class='remove-registered-student btn btn-xs btn-warning'>"
+                        + "<span class='glyphicon glyphicon-trash'></span></button></span></div>"
+
+                        + "</div>");
+                } else {
+                    configuration.courseDetailsStudentListPlaceholder.append(
+                        "<div class='list-group-item inactiveStudent registered-student' data-id='"
+                        + course.students[index].id
+                        + "' data-first-name='"
+                        + sortedByName[index].firstName
+                        + "' data-last-name='"
+                        + course.students[index].lastName
+                        + "' data-ssn='"
+                        + course.students[index].ssn
+                        + "'>"
+                        + course.students[index].firstName
+                        + " "
+                        + course.students[index].lastName
+                        + "<div class='inline-registred-student'> "
+                        + "<span class='ssnSpace'>" + course.students[index].ssn + "</span>"
+
+                        // Render the trash can, the remove student button.
+                        + "<span class='pull-right'><button class='remove-registered-student btn btn-xs btn-warning'>"
+                        + "<span class='glyphicon glyphicon-trash'></span></button></span></div>"
+
+                        + "</div>");
+                }
             }
         } else {
             configuration
@@ -272,8 +302,10 @@ var Page = new function Page() {
 
             configuration.courseDetailsStudentSelectList.empty();
             $.each(sortedData, function () {
-                Page.appendStudentSelectOption(this);   //this as argument?
-            });
+                
+                    Page.appendStudentSelectOption(this);   //this as argument?
+                
+                });
 
         }).error(function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.responseText || textStatus);
@@ -281,17 +313,22 @@ var Page = new function Page() {
 
     }
 
+    //Append active student to ddl in course details
     Page.appendStudentSelectOption = function (student) {
-        var name = student.firstName + " " + student.lastName 
-        + "   " +  student.ssn ;  
 
-        configuration.courseDetailsStudentSelectList.append(
-            $("<option />")
-            .text(name)
-            .attr("data-id", student.id)
-            .attr("data-first-name", student.firstName)
-            .attr("data-last-name", student.lastName)
-            .attr("data-ssn", student.ssn));
+        if (student.active) {
+
+            var name = student.firstName + " " + student.lastName
+            + "   " + student.ssn;
+
+            configuration.courseDetailsStudentSelectList.append(
+                $("<option />")
+                .text(name)
+                .attr("data-id", student.id)
+                .attr("data-first-name", student.firstName)
+                .attr("data-last-name", student.lastName)
+                .attr("data-ssn", student.ssn));
+        }
     }
 
     // Saves a course and displays the default view.
@@ -515,16 +552,12 @@ var Page = new function Page() {
 
     Page.editStudent = function (student) {
        
-                //return students[index];
+                //Putting student values in add student form;
                 $("input[name$='firstName']").val(student.firstName);
                 $("input[name$='lastName']").val(student.lastName);
                 $("input[name$='ssn']").val(student.ssn);
                 $("input[name$='id']").val(student.id);
                 $("input[name$='active']").val(student.active);
-
-          
-           
-        
 
     }
 
@@ -542,12 +575,10 @@ var Page = new function Page() {
 
             //debugger;
             Page.saveStudentActiveStatusDetails(student);
-            
 
         }).error(function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.responseText || textStatus);
         });
-
         
     }
 
