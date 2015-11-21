@@ -18,6 +18,8 @@ namespace WU15.StudentAdministration.Web.Models
         public string SchoolNo { get; set; }
         
         public string Credits { get; set; }
+
+        public bool Active { get; set; }
         
         public IEnumerable<Student> Students { get; set; }
 

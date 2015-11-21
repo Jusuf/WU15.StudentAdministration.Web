@@ -55,7 +55,9 @@
                 student = {
                     id: $(this).data("id"),
                     firstName: $(this).data("firstName"),
-                    lastName: $(this).data("lastName")
+                    lastName: $(this).data("lastName"),
+                    ssn: $(this).data("ssn"),
+                    active: $(this).data("active")
                 }
                 course.students.push(student);
             });
@@ -75,7 +77,7 @@
             Page.saveStudentDetails(student);
         });
         
-        // Remove a registered student.
+        // Remove a registered student from course and adds it to ddl if student active.
         $("#courseDetailsStudentListPlaceholder").on("click", ".remove-registered-student", function (event) {
             var item = $(this).closest(".list-group-item")[0];
 
@@ -84,9 +86,11 @@
             var firstName = $(item).data("firstName");
             var lastName = $(item).data("lastName");
             var ssn = $(item).data("ssn");
-            var student = { id: id, firstName: firstName, lastName: lastName, ssn: ssn}
-            Page.appendStudentSelectOption(student);
+            var active = $(item).data("active");
+            var student = { id: id, firstName: firstName, lastName: lastName, ssn: ssn, active: active}
 
+           Page.appendStudentSelectOption(student, true);
+           
             // Remove from the registered list.
             $(item).remove();
         });
@@ -168,7 +172,7 @@
                 span.text("Inaktiv");
                 span.removeClass("spanActive");
                 span.addClass("spanInactive");
-                
+               
                 var status = false;
                 Page.changeStudentStatusValue(studentId, status);
                 
@@ -209,6 +213,40 @@
                 console.log("Missed");
                 
             };
+        });
+
+        // Checkbox event student status Active/Inactive
+        $("#courseTbody").on("change", function (event) {
+
+            var courseId = $(event.target).data("courseid");
+            //debugger;
+            var check = null;
+            check = $(event.target).is(":checked");
+
+            if (check === true) {
+                console.log("Checked " + courseId);
+                var span = $(event.target.nextElementSibling);
+                span.text("Inaktiv");
+                span.removeClass("spanActive");
+                span.addClass("spanInactive");
+
+                var status = false;
+                Page.changeCourseStatusValue(courseId, status);
+
+
+            } else {
+
+                console.log("Unchecked " + courseId);
+                var span = $(event.target.nextElementSibling);
+                span.text("Aktiv");
+                span.removeClass("spanInactive");
+                span.addClass("spanActive");
+
+                var status = true;
+                Page.changeCourseStatusValue(courseId, status);
+
+            };
+
         });
         
 

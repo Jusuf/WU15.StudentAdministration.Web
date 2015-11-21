@@ -55,7 +55,8 @@ namespace WU15.StudentAdministration.Web
                 Credits = "15",
                 Name = "Pedagogik 1",
                 Term = "VT",
-                Year = "2015"
+                Year = "2015",
+                Active = true
             };
             Courses.Add(course);
 
@@ -66,7 +67,8 @@ namespace WU15.StudentAdministration.Web
                 Credits = "10",
                 Name = "Pedagogik 2",
                 Term = "VT",
-                Year = "2015"
+                Year = "2015",
+                Active = true
             };
             Courses.Add(course);
 
@@ -77,7 +79,8 @@ namespace WU15.StudentAdministration.Web
                 Credits = "5",
                 Name = "Datalogi 1",
                 Term = "VT",
-                Year = "2015"
+                Year = "2015",
+                Active = true
             };
             Courses.Add(course);
 
@@ -88,7 +91,8 @@ namespace WU15.StudentAdministration.Web
                 Credits = "7,5",
                 Name = "Filosofi 1",
                 Term = "VT",
-                Year = "2015"
+                Year = "2015",
+                Active = true
             };
             Courses.Add(course);
         }

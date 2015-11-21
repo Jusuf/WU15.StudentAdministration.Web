@@ -19,8 +19,6 @@ namespace WU15.StudentAdministration.Web.API
         {
             return MvcApplication.Students.FirstOrDefault(x => x.Id == id);
         }
-
-      
         
         public string Post(Student student)
         {

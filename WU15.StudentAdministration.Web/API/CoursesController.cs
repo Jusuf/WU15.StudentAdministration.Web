@@ -13,7 +13,7 @@ namespace WU15.StudentAdministration.Web.API
     {
         [HttpGet]
         public IEnumerable<Course> Get(string sid)
-        {            
+        {
             return MvcApplication.Courses.Where(x => x.SchoolNo.Equals(sid));
         }
 
