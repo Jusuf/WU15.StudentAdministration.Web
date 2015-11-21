@@ -95,9 +95,9 @@ var Page = new function Page() {
             var bootstrapColumns = 12 / configuration.numberOfColumnsPerRow;
             for (; courseIndex < (tempCourseIndex) ; courseIndex++) {
                 item += "<div class='col-md-" + bootstrapColumns + "'>";
-                item += "<div class='list-group sortByName'>";
-                item += "<a href='#' class='list-group-item active data-course-item'>"
-                    + "<span class='list-group-addon glyphicon glyphicon-edit' data-item-id='"
+                item += "<div class='list-group'>";
+                item += "<a href='#' class='list-group-item active data-course-item' title='visa/dölj studenterna.'>"
+                    + "<span title='Klicka här för editera kursen.' class='list-group-addon glyphicon glyphicon-edit' data-item-id='"
                     + courses[courseIndex].id + "'></span>&nbsp;" // The edit icon.
                     + courses[courseIndex].name
                     + "</a>";
@@ -172,7 +172,7 @@ var Page = new function Page() {
         configuration.courseListPlaceholder.fadeIn(500);
     }
 
-    // Render student list in courses menu
+    // Render student list in students menu
     Page.renderStudentList = function (students) {
         var tbody = $("#studentListTable tbody");
         tbody.empty();
@@ -186,7 +186,7 @@ var Page = new function Page() {
                 view += "<td>" + students[index].lastName + "</td>";
                 view += "<td>" + students[index].ssn + "</td>";
 
-                view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' checked='' name='studentStatus' value='Student' ><span class='spanInactive'>Inaktiv</span><span data-editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
+                view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' checked='' name='studentStatus' value='Student' ><span class='spanInactive'>Inaktiv</span><span title='Editera student.' data -editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
 
                 view += "</tr>";
             } else {
@@ -195,7 +195,7 @@ var Page = new function Page() {
                 view += "<td>" + students[index].lastName + "</td>";
                 view += "<td>" + students[index].ssn + "</td>";
 
-                view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' name='studentStatus' value='Student' ><span class='spanActive'>Aktiv</span><span data-editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
+                view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' name='studentStatus' value='Student' ><span class='spanActive'>Aktiv</span><span title='Editera student.' data-editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
 
                 view += "</tr>";
             }
@@ -498,6 +498,7 @@ var Page = new function Page() {
             id: 0,
             name: "",
             credits: 0,
+            active: null,
             schoolNo: configuration.organizationId,
             students: []
         }
@@ -513,7 +514,6 @@ var Page = new function Page() {
             ssn: "",
             active: null,
             schoolNo: configuration.organizationId,
-            //students: []
         }
 
         return student;
@@ -648,6 +648,7 @@ var Page = new function Page() {
 
     }
 
+    // Changes Student Status Value
     Page.changeStudentStatusValue = function (id, status) {
 
         $.ajax({
@@ -669,6 +670,7 @@ var Page = new function Page() {
         
     }
 
+    // Saves Student Active/Inactive Status Details
     Page.saveStudentActiveStatusDetails = function (student) {
 
         $.ajax({
@@ -698,42 +700,10 @@ var Page = new function Page() {
             data: { sid: configuration.organizationId }
         }).done(function (data) {
             console.log("[Page.displayCourseList]: Number of items returned: " + data.length);
-            var courses = data;
+            var course = data;
+            course.active = status;
 
-            
-
-            for (var index = 0; index < courses.length; index++) {
-                if (courses[index].id === id) {
-                   
-
-                Page.saveCourseActiveStatusDetails(id, courses);
-                   
-                    //var changedStatusCourse = {
-                    //    active: courses[index].active = status,
-                    //    credits: courses[index].credits,
-                    //    id: courses[index].id,
-                    //    name: courses[index].name,
-                    //    schoolNo: courses[index].schoolNo,
-                    //    students: courses[index].students.length,
-                    //    term: courses[index].term,
-                    //    year: courses[index].year,
-                    //    students: {
-                            
-
-                    //        active: courses[index].students[index].active,
-                    //        firstName: courses[index].students[index].firstName,
-                    //        id: courses[index].students[index].id,
-                    //        lastName: courses[index].students[index].lastname,
-                    //        ssn: courses[index].students[index].ssn
-                    //    }
-
-                    //};
-
-                }
-            }
-          
-
-            
+            Page.saveCourseActiveStatusDetails(course);
 
         }).error(function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.responseText || textStatus);

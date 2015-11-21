@@ -212,9 +212,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\plugins\tinysort\jquery.tinysort.js" />
-    <Content Include="Scripts\plugins\tinysort\tinysort.charorder.js" />
-    <Content Include="Scripts\plugins\tinysort\tinysort.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />

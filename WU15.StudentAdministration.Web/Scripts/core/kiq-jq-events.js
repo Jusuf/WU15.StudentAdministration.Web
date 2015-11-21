@@ -32,12 +32,27 @@
             }
         });
 
+        // Show / Hide students event
+        $("#defaultPlaceholder").on("click",".list-item", function (event) { 
+            var courseDefaultView = null;
+            courseDefaultView = $(event.target).hasClass("data-course-item");
+            if (courseDefaultView) {
+
+                //var id = $(event.target).data("itemId");
+                //console.log("[#defaultPlaceholder.click]: Course list clicked: " + id);
+                var targetClick = $(event.target);
+                                
+                $(targetClick).siblings("a").slideToggle("slow");
+
+            }
+        });
+
         // Cancel the course details view.
         $("#courseDetailsCancelButton").on("click", function (event) {
             console.log("[#courseDetailsCancelButton.click]: Course details canceled.");
 
             // De-scelect the top menu button.
-            Page.deselectMenu();
+            //Page.deselectMenu();
 
             Page.displayDefault();
         });
