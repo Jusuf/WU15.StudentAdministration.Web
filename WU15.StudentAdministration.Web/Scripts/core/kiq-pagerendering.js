@@ -43,6 +43,7 @@ var Page = new function Page() {
             // Render the courses.
 
             Page.renderCourseList(sortedCourses);
+            
 
         }).error(function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.responseText || textStatus);
@@ -162,6 +163,8 @@ var Page = new function Page() {
                 view += "<td>" + courses[index].name + "</td>";
                 view += "<td>" + courses[index].credits + "</td>";
                 view += "<td>" + courses[index].students.length + "</td>";
+                view += "<td>" + courses[index].year + "</td>";
+                view += "<td>" + courses[index].term + "</td>";
 
                 view += "<td><input data-courseId='" + courses[index].id + "' class='aiCheckbox' type='checkbox' checked='' name='courseStatus' value='Course' ><span class='spanInactive'>Inaktiv</span><span data-courseEditId='" + courses[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
 
@@ -171,6 +174,8 @@ var Page = new function Page() {
                 view += "<td>" + courses[index].name + "</td>";
                 view += "<td>" + courses[index].credits + "</td>";
                 view += "<td>" + courses[index].students.length + "</td>";
+                view += "<td>" + courses[index].year + "</td>";
+                view += "<td>" + courses[index].term + "</td>";
 
                 view += "<td><input data-courseId='" + courses[index].id + "' class='aiCheckbox' type='checkbox' name='courseStatus' value='Course' ><span class='spanActive'>Aktiv</span><span data-courseEditId='" + courses[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
 
@@ -181,6 +186,7 @@ var Page = new function Page() {
         tbody.append(view);
 
         configuration.courseListPlaceholder.fadeIn(500);
+       
     }
 
     // Render student list in students menu
@@ -255,6 +261,7 @@ var Page = new function Page() {
         Page.renderCourseDetailsStudentSelectList();
 
         // Display the details panel.
+       configuration.courseListPlaceholder.hide();
         configuration.courseDetailsPlaceholder.fadeIn(500);
     }
 
@@ -508,7 +515,7 @@ var Page = new function Page() {
             id: 0,
             name: "",
             credits: 0,
-            active: null,
+            active: true,
             students: []
         }
 
@@ -521,7 +528,7 @@ var Page = new function Page() {
             name: "",
             lastname: "",
             ssn: "",
-            active: null
+            active: true
         }
 
         return student;
@@ -595,9 +602,10 @@ var Page = new function Page() {
                 configuration.defaultPlaceholder.hide();
                 configuration.studentListPlaceholder.hide();
                 cleareditStudentBox();
+                
 
                 Page.displayCourseList();
-
+                configuration.panelBodyPlaceholder.hide();
                 break;
             case "students":
                 configuration.courseDetailsPlaceholder.hide();

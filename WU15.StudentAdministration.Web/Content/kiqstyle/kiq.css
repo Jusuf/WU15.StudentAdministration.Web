@@ -133,3 +133,7 @@ option {
 .courseInactive  .studentName {
   display:none;
 }
+#addCourse{
+    cursor:pointer;
+    color: green;
+}

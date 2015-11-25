@@ -12,7 +12,8 @@
             courseDetailsStudentListPlaceholder: $("#courseDetailsStudentListPlaceholder"),
             courseDetailsStudentSelectList: $("#courseDetailsStudentSelectList"),
             courseListPlaceholder: $("#courseListPlaceholder"),
-            studentListPlaceholder: $("#studentListPlaceholder")
+            studentListPlaceholder: $("#studentListPlaceholder"),
+            panelBodyPlaceholder: $("#panelBodyPlaceholder")
         });
 
         // Do some page bootstrapping.
@@ -25,6 +26,19 @@
             if (courseDefaultView) {
 
                 var id = $(event.target).data("itemId");
+                console.log("[#defaultPlaceholder.click]: Course list clicked: " + id);
+
+                Page.displayCourseDetails(id);
+            }
+        });
+
+        // Display course details for clicked course from courses menu.
+        $("#courseListTable").on("click", ".glyphicon", function (event) {
+            var courseDefaultView = null;
+            courseDefaultView = $(event.target).hasClass("glyphicon-edit");
+            if (courseDefaultView) {
+
+                var id = $(event.target).data("courseeditid");
                 console.log("[#defaultPlaceholder.click]: Course list clicked: " + id);
 
                 Page.displayCourseDetails(id);
@@ -89,7 +103,7 @@
             Page.saveStudentDetails(student);
         });
         
-        // Remove a registered student from course and adds it to ddl if student active.
+        // Remove a registered student from course and adds it to ddl
         $("#courseDetailsStudentListPlaceholder").on("click", ".remove-registered-student", function (event) {
             var item = $(this).closest(".list-group-item")[0];
 
@@ -261,6 +275,12 @@
 
         });
         
+        $("#addCourse").on("click", function () {
+           
+            var txt = $("#panelBodyPlaceholder").is(':visible') ? 'Lägg Till Kurs.' : 'Dölj Lägg Till Kurs.';
+            $("#addCourse").text(txt);
+             $("#panelBodyPlaceholder").slideToggle("slow");
+        });
 
     });
 

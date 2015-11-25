@@ -49,7 +49,7 @@
         <div id="courseDetailsPlaceholder" style="max-width: 675px;">
             <form id="courseDetailsForm">
                 <input type="hidden" name="id" value="0" />
-                <input type="hidden" name="active" value=null />
+                <input type="hidden" name="active" value="1" />
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -127,13 +127,13 @@
             <div class="panel panel-default">
                 <div class="panel-heading" style="overflow: auto">
                     <div style="float: left; overflow: auto">Kurser</div>
-                    <div style="float: right; overflow: auto">+</div>
+                    <div id="addCourse" style="float: right; overflow: auto">Lägg till Kurs.</div>
                 </div>
 
-                <div class="panel-body">
+                <div id="panelBodyPlaceholder" class="panel-body">
                     <form id="courseListAddCourseForm">
                         <input type="hidden" name="id" value="0" />
-                        <input type="hidden" name="active" value=null />
+                        <input type="hidden" name="active" value="true" />
 
                         <div class="form-group form-input-container" style="float: left;">
                             <label>Namn</label>
@@ -173,6 +173,8 @@
                             <th>Namn</th>
                             <th>Poäng</th>
                             <th>Antal studenter</th>
+                            <th>År</th>
+                            <th>Termin</th>
                             <th>Aktivera/Avaktivera Kurs</th>
                         </tr>
                     </thead>
@@ -195,7 +197,7 @@
                 <div class="panel-body">
                     <form id="studentListForm">
                         <input type="hidden" name="id" value="0" />
-                        <input type="hidden" name="active" value="true" />
+                        <input type="hidden" name="active" value="1" />
 
                         <div class="form-group form-input-container" style="float: left;">
                             <label>Förnamn</label>
