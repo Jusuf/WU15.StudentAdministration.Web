@@ -51,7 +51,6 @@ namespace WU15.StudentAdministration.Web
             {
                 Id = 1,
                 Students = Students,
-                SchoolNo = "c08bdab7-ed3d-4048-8338-d4f14f2770a8",
                 Credits = "15",
                 Name = "Pedagogik 1",
                 Term = "VT",
@@ -63,7 +62,6 @@ namespace WU15.StudentAdministration.Web
             course = new Course()
             {
                 Id = 2,
-                SchoolNo = "c08bdab7-ed3d-4048-8338-d4f14f2770a8",
                 Credits = "10",
                 Name = "Pedagogik 2",
                 Term = "VT",
@@ -75,7 +73,6 @@ namespace WU15.StudentAdministration.Web
             course = new Course()
             {
                 Id = 3,
-                SchoolNo = "c08bdab7-ed3d-4048-8338-d4f14f2770a8",
                 Credits = "5",
                 Name = "Datalogi 1",
                 Term = "VT",
@@ -87,7 +84,6 @@ namespace WU15.StudentAdministration.Web
             course = new Course()
             {
                 Id = 4,
-                SchoolNo = "c08bdab7-ed3d-4048-8338-d4f14f2770a8",
                 Credits = "7,5",
                 Name = "Filosofi 1",
                 Term = "VT",

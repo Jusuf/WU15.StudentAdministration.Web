@@ -18,8 +18,7 @@ var Page = new function Page() {
 
         $.ajax({
             type: "GET",
-            url: configuration.coursesUrl,
-            data: { sid: configuration.organizationId }
+            url: configuration.coursesUrl
         }).done(function (data) {
 
             var sortedData = sortByCourseName(data);
@@ -37,8 +36,7 @@ var Page = new function Page() {
 
         $.ajax({
             type: "GET",
-            url: configuration.coursesUrl,
-            data: { sid: configuration.organizationId }
+            url: configuration.coursesUrl
         }).done(function (data) {
             console.log("[Page.displayCourseList]: Number of items returned: " + data.length);
             var sortedCourses = sortByCourseName(data);
@@ -57,8 +55,7 @@ var Page = new function Page() {
 
         $.ajax({
             type: "GET",
-            url: configuration.studentsUrl,
-            data: { sid: configuration.organizationId }
+            url: configuration.studentsUrl
         }).done(function (data) {
             console.log("[Page.displayStudentList]: Number of items returned: " + data.length);
                        
@@ -95,14 +92,28 @@ var Page = new function Page() {
             var bootstrapColumns = 12 / configuration.numberOfColumnsPerRow;
             for (; courseIndex < (tempCourseIndex) ; courseIndex++) {
                 item += "<div class='col-md-" + bootstrapColumns + "'>";
-                item += "<div class='list-group'>";
-                item += "<a href='#' class='list-group-item active data-course-item' title='visa/dölj studenterna.'>"
-                    + "<span title='Klicka här för editera kursen.' class='list-group-addon glyphicon glyphicon-edit' data-item-id='"
-                    + courses[courseIndex].id + "'></span>&nbsp;" // The edit icon.
-                    + courses[courseIndex].name
-                    + "</a>";
-                item += "<p class='list-group-item course-item-info'>Kursstart " + courses[courseIndex].term + " " + courses[courseIndex].year + "</p>";
 
+                // Courses Active/Inactive
+                if (courses[courseIndex].active) {
+                    item += "<div class='list-group'>";
+                    item += "<a href='#' class='list-group-item active data-course-item activeCourse' title='Visa/dölj studenterna.'>"
+                        + "<span title='Klicka här för editera kursen.' class='list-group-addon glyphicon glyphicon-edit' data-item-id='"
+                        + courses[courseIndex].id + "'></span>&nbsp;" // The edit icon.
+                        + courses[courseIndex].name
+                        + "</a>";
+                    item += "<p class='list-group-item course-item-info'>Kursstart " + courses[courseIndex].term + " " + courses[courseIndex].year + "</p>";
+
+
+                } else {
+                    item += "<div class='list-group courseInactive'>";
+                    item += "<a href='#' class='list-group-item active data-course-item' title='Aktivera kursen för att visa studenterna.'>"
+                        + "<span title='Klicka här för editera kursen.' class='list-group-addon glyphicon glyphicon-edit' data-item-id='"
+                        + courses[courseIndex].id + "'></span>&nbsp;" // The edit icon.
+                        + courses[courseIndex].name
+                        + "</a>";
+                    item += "<p class='list-group-item course-item-info'>Kursen är inaktiverad.</p>";
+                }
+                
                 // Students
                 if (courses[courseIndex].students.length > 0) {
                     for (var subIndex = 0; subIndex < courses[courseIndex].students.length; subIndex++) {
@@ -323,8 +334,7 @@ var Page = new function Page() {
 
         $.ajax({
             type: "GET",
-            url: configuration.studentsUrl,
-            data: { sid: configuration.organizationId }
+            url: configuration.studentsUrl
         }).done(function (data) {
             
             var sortedData = sortByStudentName(data);
@@ -354,9 +364,9 @@ var Page = new function Page() {
         for (var i = 0; i < studentInList.length; i++) {
             var studentId = studentInList[i].getAttribute("data-id");
 
-            studentDdl = student.id.toString();
+            studentIdl = student.id.toString();
 
-            if (studentDdl === studentId) {
+            if (studentIdl === studentId) {
                 
                 var StudentInRegisteredList = true;
 
@@ -499,7 +509,6 @@ var Page = new function Page() {
             name: "",
             credits: 0,
             active: null,
-            schoolNo: configuration.organizationId,
             students: []
         }
 
@@ -512,8 +521,7 @@ var Page = new function Page() {
             name: "",
             lastname: "",
             ssn: "",
-            active: null,
-            schoolNo: configuration.organizationId,
+            active: null
         }
 
         return student;
@@ -579,6 +587,8 @@ var Page = new function Page() {
 
                 Page.displayDefault();
 
+                
+
                 break;
             case "courses":
                 configuration.courseDetailsPlaceholder.hide();
@@ -598,20 +608,10 @@ var Page = new function Page() {
                 Page.displayStudentList();
 
                 break;
-            case "addCourse":
-                configuration.courseDetailsPlaceholder.hide();
-                configuration.defaultPlaceholder.hide();
-                configuration.courseListPlaceholder.hide();
-                configuration.studentListPlaceholder.hide();  //La till 151028 Bug fix
-                cleareditStudentBox();
-
-                var course = Page.getCourseTemplate();
-                Page.renderCourseDetails(course);
-
-                break;
             default:
                 configuration.courseDetailsPlaceholder.hide();
                 Page.displayDefault();
+                
         }
     }
 
@@ -624,8 +624,7 @@ var Page = new function Page() {
 
         $.ajax({
                 type: "GET",
-                url: configuration.studentsUrl + id,
-                data: { sid: configuration.organizationId }
+                url: configuration.studentsUrl + id
             }).done(function (data) {
                 console.log("[Page.displayStudentList]: Number of items returned: " + data.length);
 
@@ -653,8 +652,7 @@ var Page = new function Page() {
 
         $.ajax({
             type: "GET",
-            url: configuration.studentsUrl + id,
-            data: { sid: configuration.organizationId }
+            url: configuration.studentsUrl + id
         }).done(function (data) {
             console.log("[Page.displayStudentList]: Number of items returned: " + data.length);
 
@@ -696,8 +694,7 @@ var Page = new function Page() {
         //debugger;
         $.ajax({
             type: "GET",
-            url: configuration.coursesUrl + id ,
-            data: { sid: configuration.organizationId }
+            url: configuration.coursesUrl + id
         }).done(function (data) {
             console.log("[Page.displayCourseList]: Number of items returned: " + data.length);
             var course = data;
@@ -711,10 +708,10 @@ var Page = new function Page() {
 
     }
     // Saves Course Active/Inactive Status Details
-    Page.saveCourseActiveStatusDetails = function (id, course) {
+    Page.saveCourseActiveStatusDetails = function (course) {
 
         $.ajax({
-            url: configuration.coursesUrl + id,
+            url: configuration.coursesUrl,
             type: "POST",
             data: JSON.stringify(course),
             contentType: "application/json",
@@ -722,15 +719,14 @@ var Page = new function Page() {
                 console.log("[Page.saveCourseActiveDetails.success]: Results: " + data);
 
                 Page.displayCourseList();
-               
+
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
             }
         });
-
     }
-    
+
     return Page;
 }
 

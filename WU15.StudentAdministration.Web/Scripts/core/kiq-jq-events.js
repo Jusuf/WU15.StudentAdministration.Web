@@ -2,7 +2,6 @@
 
         // Setup initial page parameters.
         Page.setup({
-            organizationId: "c08bdab7-ed3d-4048-8338-d4f14f2770a8",
             numberOfColumnsPerRow: 3,
             studentsUrl: "http://localhost:45959/api/students/",
             coursesUrl: "http://localhost:45959/api/courses/",
@@ -35,11 +34,9 @@
         // Show / Hide students event
         $("#defaultPlaceholder").on("click",".list-item", function (event) { 
             var courseDefaultView = null;
-            courseDefaultView = $(event.target).hasClass("data-course-item");
+            courseDefaultView = $(event.target).hasClass("activeCourse");
             if (courseDefaultView) {
-
-                //var id = $(event.target).data("itemId");
-                //console.log("[#defaultPlaceholder.click]: Course list clicked: " + id);
+                
                 var targetClick = $(event.target);
                                 
                 $(targetClick).siblings("a").slideToggle("slow");

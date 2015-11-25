@@ -127,3 +127,9 @@ option {
 .inactiveStudent {
     background-color: lightgray;
 }
+.courseInactive .course-item-info  {
+  color: red;
+}
+.courseInactive  .studentName {
+  display:none;
+}
