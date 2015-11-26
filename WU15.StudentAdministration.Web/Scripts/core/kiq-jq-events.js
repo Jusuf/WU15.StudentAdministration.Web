@@ -13,7 +13,8 @@
             courseDetailsStudentSelectList: $("#courseDetailsStudentSelectList"),
             courseListPlaceholder: $("#courseListPlaceholder"),
             studentListPlaceholder: $("#studentListPlaceholder"),
-            panelBodyPlaceholder: $("#panelBodyPlaceholder")
+            panelBodyPlaceholder: $("#panelBodyPlaceholder"),
+            studentListFormPlaceholder: $("#studentListFormBody")
         });
 
         // Do some page bootstrapping.
@@ -40,12 +41,11 @@
 
                 var id = $(event.target).data("courseeditid");
                 console.log("[#defaultPlaceholder.click]: Course list clicked: " + id);
-
                 Page.displayCourseDetails(id);
             }
         });
 
-        // Show / Hide students event
+        // Show / Hide students in defaultview event
         $("#defaultPlaceholder").on("click",".list-item", function (event) { 
             var courseDefaultView = null;
             courseDefaultView = $(event.target).hasClass("activeCourse");
@@ -64,8 +64,9 @@
 
             // De-scelect the top menu button.
             //Page.deselectMenu();
-
+          
             Page.displayDefault();
+            Page.deselectMenu();
         });
 
         // Save the course details.
@@ -88,6 +89,7 @@
                 course.students.push(student);
             });
 
+            Page.deselectMenu()
             Page.saveCourseAndDisplayDefault(course);
         });
 
@@ -128,6 +130,7 @@
 
         });
 
+        // Navigation menu active status
         $('.nav li').click(function (e) {
             $('.navbar li.active').removeClass('active');
             var $this = $(this);
@@ -139,12 +142,14 @@
             e.preventDefault();
         });
 
+        // Navigation menu active status change on page title click
         $(".navbar-brand").click(function (e) {
             $('.navbar li.active').removeClass('active');
             $('.nav li a[href="#start"]').parent().addClass('active');
                         
         });
 
+        // Navigation
         $(".navigation").on("click", function () {
             var panel = this.href.substr(this.href.indexOf("#") + 1);
 
@@ -230,9 +235,10 @@
             if (editClick === true) {
 
                 console.log("Clicked Id " + clickedId);
-                
+
                 Page.displayStudentInEditBox(clickedId);
-                
+                $("#studentListFormBody").slideDown("slow");
+                $("#addStudent").text('Dölj Lägg Till Student.');
                 //debugger;
             } else {
 
@@ -275,13 +281,24 @@
 
         });
         
+        // Add course show/hide event
         $("#addCourse").on("click", function () {
            
             var txt = $("#panelBodyPlaceholder").is(':visible') ? 'Lägg Till Kurs.' : 'Dölj Lägg Till Kurs.';
             $("#addCourse").text(txt);
-             $("#panelBodyPlaceholder").slideToggle("slow");
+            $("#panelBodyPlaceholder").slideToggle("slow");
+
         });
 
+        // Add student show/hide event
+        $("#addStudent").on("click", function () {
+
+            var txt = $("#studentListFormBody").is(':visible') ? 'Lägg Till Student.' : 'Dölj Lägg Till Student.';
+            $("#addStudent").text(txt);
+
+            $("#studentListFormBody").slideToggle("slow");
+
+        });
     });
 
 

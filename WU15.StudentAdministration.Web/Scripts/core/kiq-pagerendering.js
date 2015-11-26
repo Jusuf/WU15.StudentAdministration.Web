@@ -98,7 +98,7 @@ var Page = new function Page() {
                 if (courses[courseIndex].active) {
                     item += "<div class='list-group'>";
                     item += "<a href='#' class='list-group-item active data-course-item activeCourse' title='Visa/dölj studenterna.'>"
-                        + "<span title='Klicka här för editera kursen.' class='list-group-addon glyphicon glyphicon-edit' data-item-id='"
+                        + "<span title='Klicka här för att redigera kursen.' class='list-group-addon glyphicon glyphicon-edit' data-item-id='"
                         + courses[courseIndex].id + "'></span>&nbsp;" // The edit icon.
                         + courses[courseIndex].name
                         + "</a>";
@@ -108,7 +108,7 @@ var Page = new function Page() {
                 } else {
                     item += "<div class='list-group courseInactive'>";
                     item += "<a href='#' class='list-group-item active data-course-item' title='Aktivera kursen för att visa studenterna.'>"
-                        + "<span title='Klicka här för editera kursen.' class='list-group-addon glyphicon glyphicon-edit' data-item-id='"
+                        + "<span title='Klicka här för att redigera kursen.' class='list-group-addon glyphicon glyphicon-edit' data-item-id='"
                         + courses[courseIndex].id + "'></span>&nbsp;" // The edit icon.
                         + courses[courseIndex].name
                         + "</a>";
@@ -166,7 +166,7 @@ var Page = new function Page() {
                 view += "<td>" + courses[index].year + "</td>";
                 view += "<td>" + courses[index].term + "</td>";
 
-                view += "<td><input data-courseId='" + courses[index].id + "' class='aiCheckbox' type='checkbox' checked='' name='courseStatus' value='Course' ><span class='spanInactive'>Inaktiv</span><span data-courseEditId='" + courses[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
+                view += "<td><input data-courseId='" + courses[index].id + "' class='aiCheckbox' type='checkbox' checked='' name='courseStatus' value='Course' ><span class='spanInactive'>Inaktiv</span><span data-courseEditId='" + courses[index].id + "' href='#' class='glyphicon glyphicon-edit' title='Klicka här för att redigera kursen.'></span></td>";
 
                 view += "</tr>";
             } else {
@@ -177,7 +177,7 @@ var Page = new function Page() {
                 view += "<td>" + courses[index].year + "</td>";
                 view += "<td>" + courses[index].term + "</td>";
 
-                view += "<td><input data-courseId='" + courses[index].id + "' class='aiCheckbox' type='checkbox' name='courseStatus' value='Course' ><span class='spanActive'>Aktiv</span><span data-courseEditId='" + courses[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
+                view += "<td><input data-courseId='" + courses[index].id + "' class='aiCheckbox' type='checkbox' name='courseStatus' value='Course' ><span class='spanActive'>Aktiv</span><span data-courseEditId='" + courses[index].id + "' href='#' class='glyphicon glyphicon-edit' title='Klicka här för att redigera kursen.'></span></td>";
 
                 view += "</tr>";
             }
@@ -203,7 +203,7 @@ var Page = new function Page() {
                 view += "<td>" + students[index].lastName + "</td>";
                 view += "<td>" + students[index].ssn + "</td>";
 
-                view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' checked='' name='studentStatus' value='Student' ><span class='spanInactive'>Inaktiv</span><span title='Editera student.' data -editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
+                view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' checked='' name='studentStatus' value='Student' ><span class='spanInactive'>Inaktiv</span><span title='Redigera student.' data -editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
 
                 view += "</tr>";
             } else {
@@ -212,7 +212,7 @@ var Page = new function Page() {
                 view += "<td>" + students[index].lastName + "</td>";
                 view += "<td>" + students[index].ssn + "</td>";
 
-                view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' name='studentStatus' value='Student' ><span class='spanActive'>Aktiv</span><span title='Editera student.' data-editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
+                view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' name='studentStatus' value='Student' ><span class='spanActive'>Aktiv</span><span title='Redigera student.' data-editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
 
                 view += "</tr>";
             }
@@ -444,7 +444,7 @@ var Page = new function Page() {
             error: function (jqXHR, textStatus, errorThrown) {
             }
         });
-
+        Page.displayDefault();
     }
 
     // Adds student to course in course details.
@@ -614,6 +614,7 @@ var Page = new function Page() {
                 cleareditStudentBox();
 
                 Page.displayStudentList();
+                configuration.studentListFormPlaceholder.hide();
 
                 break;
             default:
@@ -626,6 +627,8 @@ var Page = new function Page() {
     Page.deselectMenu = function () {
 
         $('.navbar li.active').removeClass('active');
+        $('.navbar li.startActive').addClass('active');
+
     }
 
     Page.displayStudentInEditBox = function (id) {
