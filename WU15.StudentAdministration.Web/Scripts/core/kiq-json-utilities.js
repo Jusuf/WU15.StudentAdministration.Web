@@ -1,4 +1,5 @@
-﻿var Utilities = new function Utilities() {
+﻿
+var Utilities = new function Utilities() {
 
     Utilities.formToJson = function (form) {
         var jsonForm = {};
@@ -11,4 +12,5 @@
 
     return Utilities;
 }
+
 

@@ -1,25 +1,5 @@
 ﻿    $(document).ready(function () {
 
-        // Setup initial page parameters.
-        Page.setup({
-            numberOfColumnsPerRow: 3,
-            studentsUrl: "http://localhost:45959/api/students/",
-            coursesUrl: "http://localhost:45959/api/courses/",
-            //studentsUrl: "http://api.wu15.se/api/students/",
-            //coursesUrl: "http://api.wu15.se/api/courses/",
-            defaultPlaceholder: $("#defaultPlaceholder"),
-            courseDetailsPlaceholder: $("#courseDetailsPlaceholder"),
-            courseDetailsStudentListPlaceholder: $("#courseDetailsStudentListPlaceholder"),
-            courseDetailsStudentSelectList: $("#courseDetailsStudentSelectList"),
-            courseListPlaceholder: $("#courseListPlaceholder"),
-            studentListPlaceholder: $("#studentListPlaceholder"),
-            panelBodyPlaceholder: $("#panelBodyPlaceholder"),
-            studentListFormPlaceholder: $("#studentListFormBody")
-        });
-
-        // Do some page bootstrapping.
-        Page.init();
-
         // Display course details for clicked course.
         $("#defaultPlaceholder").on("click", ".list-item", function (event) {
             var courseDefaultView = null;
@@ -47,6 +27,8 @@
 
         // Show / Hide students in defaultview event
         $("#defaultPlaceholder").on("click",".list-item", function (event) { 
+
+            event.preventDefault();
             var courseDefaultView = null;
             courseDefaultView = $(event.target).hasClass("activeCourse");
             if (courseDefaultView) {
@@ -187,7 +169,6 @@
             cleareditStudentBox();
             
         });
-
 
         // Checkbox event student status Active/Inactive
         $("#studentTbody").on("change", function (event) {

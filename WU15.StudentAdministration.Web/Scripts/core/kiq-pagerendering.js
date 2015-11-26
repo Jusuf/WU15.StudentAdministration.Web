@@ -1,4 +1,5 @@
 ﻿
+
 var Page = new function Page() {
     var configuration = null;
 
@@ -43,7 +44,7 @@ var Page = new function Page() {
             // Render the courses.
 
             Page.renderCourseList(sortedCourses);
-            
+            configuration.defaultPlaceholder.hide();
 
         }).error(function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.responseText || textStatus);
@@ -410,10 +411,7 @@ var Page = new function Page() {
             contentType: "application/json",
             success: function (data, textStatus, jqXHR) {
                 console.log("[Page.saveCourseAndDisplayDefault.success]: Results: " + data);
-
-                // De-scelect the top menu button.
-                //Page.deselectMenu();
-
+                                
                 // Display the default contents.
                 Page.displayDefault();
             },
@@ -425,6 +423,8 @@ var Page = new function Page() {
 
     // Saves a course and does'nt do a view update.
     Page.saveCourseDetails = function (course) {
+
+        course.active = true;
 
         $.ajax({
             url: configuration.coursesUrl,
@@ -444,7 +444,7 @@ var Page = new function Page() {
             error: function (jqXHR, textStatus, errorThrown) {
             }
         });
-        Page.displayDefault();
+        //Page.displayDefault();
     }
 
     // Adds student to course in course details.
@@ -536,6 +536,8 @@ var Page = new function Page() {
 
     Page.saveStudentDetails = function (student) {
 
+        student.active = true;
+
         $.ajax({
             url: configuration.studentsUrl,
             type: "POST",
@@ -555,6 +557,7 @@ var Page = new function Page() {
             }
         });
         
+       
     }
 
     Page.registerSelectedStudent = function () {
@@ -594,15 +597,13 @@ var Page = new function Page() {
 
                 Page.displayDefault();
 
-                
-
                 break;
             case "courses":
                 configuration.courseDetailsPlaceholder.hide();
                 configuration.defaultPlaceholder.hide();
                 configuration.studentListPlaceholder.hide();
                 cleareditStudentBox();
-                
+                $("#addCourse").text('Lägg Till Kurs.');
 
                 Page.displayCourseList();
                 configuration.panelBodyPlaceholder.hide();
@@ -612,6 +613,7 @@ var Page = new function Page() {
                 configuration.defaultPlaceholder.hide();
                 configuration.courseListPlaceholder.hide();
                 cleareditStudentBox();
+                $("#addStudent").text('Lägg Till Student.');
 
                 Page.displayStudentList();
                 configuration.studentListFormPlaceholder.hide();

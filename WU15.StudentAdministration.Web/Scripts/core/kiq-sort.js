@@ -1,4 +1,4 @@
-﻿//Sort by student name function
+﻿// Sort by student name 
 sortByStudentName = function (students) {
     sortedStudents = students.sort(function (a, b) {
         if (a.firstName < b.firstName)
@@ -12,7 +12,7 @@ sortByStudentName = function (students) {
     return sortedStudents;
 };
 
-//Sort by course name function
+//Sort by course name 
 sortByCourseName = function (courses) {
     sortedCourses = courses.sort(function (a, b) {
         if (a.name < b.name)

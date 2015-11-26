@@ -196,7 +196,8 @@
     <None Include="Properties\PublishProfiles\api.skolkonsulten.se.pubxml" />
     <None Include="Properties\PublishProfiles\api.wu15.se.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
-    <Content Include="Scripts\core\json-utilities.js" />
+    <Content Include="Scripts\core\kiq-json-utilities.js" />
+    <Content Include="Scripts\core\kiq-page-setup.js" />
     <Content Include="Scripts\core\kiq-sort.js" />
     <Content Include="Scripts\core\kiq-jq-events.js" />
     <Content Include="Scripts\core\kiq-pagerendering.js" />
