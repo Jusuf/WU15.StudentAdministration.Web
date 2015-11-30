@@ -24,6 +24,7 @@ namespace WU15.StudentAdministration.Web
             //json.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
 
+            //config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; 
 
             // Web API routes
             config.MapHttpAttributeRoutes();
