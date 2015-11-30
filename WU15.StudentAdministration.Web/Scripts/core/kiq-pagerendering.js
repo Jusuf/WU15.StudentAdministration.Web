@@ -204,7 +204,7 @@ var Page = new function Page() {
                 view += "<td>" + students[index].lastName + "</td>";
                 view += "<td>" + students[index].ssn + "</td>";
 
-                view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' checked='' name='studentStatus' value='Student' ><span class='spanInactive'>Inaktiv</span><span title='Redigera student.' data -editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
+                view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' checked='' name='studentStatus' value='Student' ><span class='spanInactive'>Inaktiv</span><span title='Redigera student.' data-editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
 
                 view += "</tr>";
             } else {
@@ -639,7 +639,7 @@ var Page = new function Page() {
                 type: "GET",
                 url: configuration.studentsUrl + id
             }).done(function (data) {
-                console.log("[Page.displayStudentList]: Number of items returned: " + data.length);
+                console.log("[Page.displayStudentList]: " + data.id);
 
                 //var data = {}
                 Page.editStudent(data);
@@ -667,7 +667,7 @@ var Page = new function Page() {
             type: "GET",
             url: configuration.studentsUrl + id
         }).done(function (data) {
-            console.log("[Page.displayStudentList]: Number of items returned: " + data.length);
+            //console.log("[Page.displayStudentList]: Number of items returned: " + data.length);
 
             var student = data;
             student.active = status;
