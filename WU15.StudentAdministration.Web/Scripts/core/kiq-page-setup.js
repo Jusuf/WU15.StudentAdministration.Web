@@ -21,8 +21,6 @@
 
     // Do some page bootstrapping.
     Page.init();
-
-
 });
 
       

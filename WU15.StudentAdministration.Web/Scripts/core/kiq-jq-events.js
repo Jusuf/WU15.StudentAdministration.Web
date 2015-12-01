@@ -310,6 +310,14 @@
 
             Page.SearchStudent(searchString);
         });
+
+        $(document).ajaxStart(function () {
+            $('#loadingDiv').show();  // show Loading Div
+        }).ajaxStop(function () {
+            $('#loadingDiv').hide(); // hide loading div
+        });
+
+
     });
 
 
