@@ -23,6 +23,13 @@ namespace WU15.StudentAdministration.Web
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/kiq").Include(
+                      "~/Scripts/core/kiq-jq-events.js",
+                      "~/Scripts/core/kiq-json-utilities.js",
+                      "~/Scripts/core/kiq-page-setup.js",
+                      "~/Scripts/core/kiq-pagerendering.js", 
+                      "~/Scripts/core/kiq-sort.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));

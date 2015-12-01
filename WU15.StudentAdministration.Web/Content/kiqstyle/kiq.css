@@ -135,9 +135,27 @@ option {
 }
 #addCourse{
     cursor:pointer;
-    color: green;
+    color: black;
 }
 #addStudent{
     cursor:pointer;
-    color: green;
+    color: black;
+}
+#searchStudent{
+    cursor:pointer;
+    color: black;
+    margin-right: 30px;
+}
+#addStudent:hover{
+    color: green!important;
+}
+#searchStudent:hover{
+    color: green!important;
+}
+#addCourse:hover{
+    cursor:pointer;
+    color: green!important;
+}
+.list-group-item:nth-of-type(2n+2){
+    background-color:#F9F9F9;
 }

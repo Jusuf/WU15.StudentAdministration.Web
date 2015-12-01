@@ -54,7 +54,6 @@ var Page = new function Page() {
     // Fetch the data and render the page.
     Page.displayStudentList = function () {
 
-
         $.ajax({
             type: "GET",
             url: configuration.studentsUrl
@@ -64,7 +63,7 @@ var Page = new function Page() {
         var sortedData = sortByStudentName(data);
 
         Page.renderStudentList(sortedData);
-        
+
         }).error(function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.responseText || textStatus);
         });
@@ -118,6 +117,9 @@ var Page = new function Page() {
                 
                 // Students
                 if (courses[courseIndex].students.length > 0) {
+                    
+                    item += "<div class='studentPlaceholder' style='display:none'>";
+
                     for (var subIndex = 0; subIndex < courses[courseIndex].students.length; subIndex++) {
 
                         // Sort students by firstname
@@ -125,15 +127,17 @@ var Page = new function Page() {
 
                         // Displays active/inactive students
                         if (sortedByName[subIndex].active) {
-                            item += "<a href='#' class='list-group-item studentName'>" + sortedByName[subIndex].firstName + " " + courses[courseIndex].students[subIndex].lastName + "<span class='ssnDefaultView'>" + courses[courseIndex].students[subIndex].ssn + "</span></a>";
+
+                            item += "<a href='#' class='list-group-item'>" + sortedByName[subIndex].firstName + " " + courses[courseIndex].students[subIndex].lastName + "<span class='ssnDefaultView'>" + courses[courseIndex].students[subIndex].ssn + "</span></a>";
                         } else {
-                            item += "<a href='#' class='list-group-item inactiveStudent studentName'>" + sortedByName[subIndex].firstName + " " + courses[courseIndex].students[subIndex].lastName + "<span class='ssnDefaultView'>" + courses[courseIndex].students[subIndex].ssn + "</span></a>";
+                            item += "<a href='#' class='list-group-item inactiveStudent'>" + sortedByName[subIndex].firstName + " " + courses[courseIndex].students[subIndex].lastName + "<span class='ssnDefaultView'>" + courses[courseIndex].students[subIndex].ssn + "</span></a>";
                         }
                     }
                 } else {
+                    item += "<div class='studentPlaceholder' style='display:none'>";
                     item += "<span class='list-group-item'>Kursen har inga studenter registrerade.</span>";
                 }
-
+                item += "</div>";
                 item += "</div>";
                 item += "</div>";
             }
@@ -194,28 +198,37 @@ var Page = new function Page() {
     Page.renderStudentList = function (students) {
         var tbody = $("#studentListTable tbody");
         tbody.empty();
+        
+        var view = "";
 
-        var view = "";                                         
+        if (students.length === 0) {
+            view += "<tr>";
+            view += "<td>Inga studenter hittades.</td>";
+            view += "<td></td>";
+            view += "<td></td>";
+            view += "<td></td>";
+            view += "</tr>";
+        }else{
 
-        for (var index = 0; index < students.length; index++) {
-            if (students[index].active === false) {
-                view += "<tr>";
-                view += "<td>" + students[index].firstName + "</td>";
-                view += "<td>" + students[index].lastName + "</td>";
-                view += "<td>" + students[index].ssn + "</td>";
+            for (var index = 0; index < students.length; index++) {
 
-                view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' checked='' name='studentStatus' value='Student' ><span class='spanInactive'>Inaktiv</span><span title='Redigera student.' data-editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
+                if (students[index].active === false) {
+                    view += "<tr>";
+                    view += "<td>" + students[index].firstName + "</td>";
+                    view += "<td>" + students[index].lastName + "</td>";
+                    view += "<td>" + students[index].ssn + "</td>";
+                    view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' checked='' name='studentStatus' value='Student' ><span class='spanInactive'>Inaktiv</span><span title='Redigera student.' data-editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
+                    view += "</tr>";
+                } else {
+                    view += "<tr>";
+                    view += "<td>" + students[index].firstName + "</td>";
+                    view += "<td>" + students[index].lastName + "</td>";
+                    view += "<td>" + students[index].ssn + "</td>";
+                    view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' name='studentStatus' value='Student' ><span class='spanActive'>Aktiv</span><span title='Redigera student.' data-editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
+                    view += "</tr>";
+                }
 
-                view += "</tr>";
-            } else {
-                view += "<tr>";
-                view += "<td>" + students[index].firstName + "</td>";
-                view += "<td>" + students[index].lastName + "</td>";
-                view += "<td>" + students[index].ssn + "</td>";
-
-                view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' name='studentStatus' value='Student' ><span class='spanActive'>Aktiv</span><span title='Redigera student.' data-editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
-
-                view += "</tr>";
+                 
             }
 
         }
@@ -593,7 +606,7 @@ var Page = new function Page() {
                 configuration.courseDetailsPlaceholder.hide();
                 configuration.courseListPlaceholder.hide();
                 configuration.studentListPlaceholder.hide();
-                cleareditStudentBox();
+                configuration.studentSearchPlaceholder.hide();
 
                 Page.displayDefault();
 
@@ -602,8 +615,10 @@ var Page = new function Page() {
                 configuration.courseDetailsPlaceholder.hide();
                 configuration.defaultPlaceholder.hide();
                 configuration.studentListPlaceholder.hide();
-                cleareditStudentBox();
-                $("#addCourse").text('Lägg Till Kurs.');
+                configuration.studentSearchPlaceholder.hide();
+                
+                resetMenuText();
+                resetActiveColor();
 
                 Page.displayCourseList();
                 configuration.panelBodyPlaceholder.hide();
@@ -612,9 +627,14 @@ var Page = new function Page() {
                 configuration.courseDetailsPlaceholder.hide();
                 configuration.defaultPlaceholder.hide();
                 configuration.courseListPlaceholder.hide();
+                configuration.studentSearchPlaceholder.hide();
+                configuration.studentSearchPlaceholder.hide();
                 cleareditStudentBox();
-                $("#addStudent").text('Lägg Till Student.');
-
+                clearSearchStudentBox();
+                resetActiveColor();
+                resetMenuText();
+               
+                
                 Page.displayStudentList();
                 configuration.studentListFormPlaceholder.hide();
 
@@ -737,6 +757,20 @@ var Page = new function Page() {
             },
             error: function (jqXHR, textStatus, errorThrown) {
             }
+        });
+    }
+
+    Page.SearchStudent = function (searchString) {
+
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:45959/api/searchStudents/" + searchString
+        }).done(function (data) {
+            
+            Page.renderStudentList(data);
+
+        }).error(function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.responseText || textStatus);
         });
     }
 

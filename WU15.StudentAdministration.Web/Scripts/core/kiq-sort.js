@@ -21,18 +21,37 @@ sortByCourseName = function (courses) {
             return 1;
         return 0;
     }
-
 )
     return sortedCourses;
 };
 
 cleareditStudentBox = function () {
+
     $("input[name$='firstName']").val("");
     $("input[name$='lastName']").val("");
     $("input[name$='ssn']").val("");
     $("input[name$='id']").val(null);
     $("input[name$='active']").val(null);
 };
+
+clearSearchStudentBox = function () {
+    $("input[name$='searchString']").val("");
+};
+
+// Resets color on Add Student/Course and Search Student menus
+resetActiveColor = function () {
+
+    $("#searchStudent").css({ "color": "black" });
+    $("#addStudent").css({ "color": "black" });
+    $("#addCourse").css({ "color": "black" });
+};
+
+resetMenuText = function () {
+    $("#addStudent").text('Lägg Till Student.');
+    $("#searchStudent").text('Sök Student.');
+    $("#addCourse").text('Lägg Till Kurs.');
+};
+
 
 
 

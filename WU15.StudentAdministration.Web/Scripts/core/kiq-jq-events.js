@@ -34,9 +34,8 @@
             if (courseDefaultView) {
                 
                 var targetClick = $(event.target);
-                                
-                $(targetClick).siblings("a").slideToggle("slow");
 
+                $(targetClick).siblings("div").slideToggle("slow");
             }
         });
 
@@ -220,7 +219,8 @@
                 Page.displayStudentInEditBox(clickedId);
                 $("#studentListFormBody").slideDown("slow");
                 $("#addStudent").text('Dölj Lägg Till Student.');
-                //debugger;
+                $("#addStudent").css({ "color": 'green' });
+
             } else {
 
                 console.log("Missed");
@@ -267,6 +267,10 @@
            
             var txt = $("#panelBodyPlaceholder").is(':visible') ? 'Lägg Till Kurs.' : 'Dölj Lägg Till Kurs.';
             $("#addCourse").text(txt);
+
+            var color = $("#panelBodyPlaceholder").is(':visible') ? '' : 'green';
+            $("#addCourse").css({ "color": color });
+
             $("#panelBodyPlaceholder").slideToggle("slow");
 
         });
@@ -277,8 +281,34 @@
             var txt = $("#studentListFormBody").is(':visible') ? 'Lägg Till Student.' : 'Dölj Lägg Till Student.';
             $("#addStudent").text(txt);
 
+            var color = $("#studentListFormBody").is(':visible') ? '' : 'green';
+            $("#addStudent").css({ "color": color });
+
             $("#studentListFormBody").slideToggle("slow");
 
+        });
+
+        // Search student show/hide event
+        $("#searchStudent").on("click", function () {
+
+            var txt = $("#studentSearchFormBody").is(':visible') ? 'Sök Student.' : 'Dölj Sök Student.';
+            $("#searchStudent").text(txt);
+
+            var color = $("#studentSearchFormBody").is(':visible') ? '' : 'green';
+            $("#searchStudent").css({ "color": color });
+
+            $("#studentSearchFormBody").slideToggle("slow");
+
+        });
+
+        // Search student details.
+        $("#studentSearchForm").submit(function (event) {
+            event.preventDefault();
+            console.log("[studentSearchForm.submit]: Submitted student search form.");
+
+            var searchString = $(this).find("input[name='searchString']").val();
+
+            Page.SearchStudent(searchString);
         });
     });
 

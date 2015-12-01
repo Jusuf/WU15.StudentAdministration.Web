@@ -14,7 +14,9 @@
         courseListPlaceholder: $("#courseListPlaceholder"),
         studentListPlaceholder: $("#studentListPlaceholder"),
         panelBodyPlaceholder: $("#panelBodyPlaceholder"),
-        studentListFormPlaceholder: $("#studentListFormBody")
+        studentListFormPlaceholder: $("#studentListFormBody"),
+        studentSearchPlaceholder: $("#studentSearchFormBody"),
+        studentsDefaultplaceholder: $(".studentsDefaultplaceholder")
     });
 
     // Do some page bootstrapping.
