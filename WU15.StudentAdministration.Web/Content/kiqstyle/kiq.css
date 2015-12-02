@@ -161,4 +161,7 @@ option {
 }
 #loadingDiv{
     margin-left:30px;
+    background-color:#428bca;
+    color:white;
+    margin-top:12px;
 }
