@@ -8,7 +8,6 @@ using System.Web.Http;
 using WU15.StudentAdministration.Web.DataAccess;
 using WU15.StudentAdministration.Web.Models;
 
-
 namespace WU15.StudentAdministration.Web.API
 {
     public class CoursesController : ApiController
