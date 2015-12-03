@@ -152,6 +152,7 @@ var Page = new function Page() {
 
         // Display the content.
         configuration.defaultPlaceholder.fadeIn(500);
+
     }
 
     // Render course list in courses menu

@@ -78,9 +78,7 @@
         $("#studentListForm").submit(function (event) {
             event.preventDefault();
             console.log("[studentDetailsForm.submit]: Submitted student details form.");
-
-            //alert($('input:hidden[name=active]').val());
-            //alert(document.getElementById('konj').value);
+            debugger;
             
             var student = Utilities.formToJson(this);
             cleareditStudentBox();
@@ -295,6 +293,10 @@
             $("#addStudent").css({ "color": color });
 
             $("#studentListFormBody").slideToggle("slow");
+
+            $('input[name="active"]').val(true);
+
+            $('input[name="id"]').val(0);
 
         });
 
