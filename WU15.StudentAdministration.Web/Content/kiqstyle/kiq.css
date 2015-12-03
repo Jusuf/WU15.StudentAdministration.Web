@@ -126,6 +126,9 @@ option {
 }
 .inactiveStudent {
     background-color: lightgray;
+    border-right-color: red;
+    border-left-color: red;
+    
 }
 .courseInactive .course-item-info  {
   color: red;
@@ -156,12 +159,12 @@ option {
     cursor:pointer;
     color: green!important;
 }
-.list-group-item:nth-of-type(2n+2){
-    background-color:#F9F9F9;
+#loadingDiv {
+    margin-left: 30px;
+    background-color: #428bca;
+    color: white;
+    margin-top: 12px;
 }
-#loadingDiv{
-    margin-left:30px;
-    background-color:#428bca;
-    color:white;
-    margin-top:12px;
+.studentInCourseDefaultView:nth-of-type(2n+1){
+    background-color:#f9f9f9;
 }

@@ -41,121 +41,121 @@ namespace WU15.StudentAdministration.Web
 
             GlobalConfiguration.Configuration.MessageHandlers.Add(new XHttpMethodOverrideDelegatingHandler());
 
-            Courses = new List<Course>();
-            Students = new List<Student>();
-            LoadStudents();
-            LoadCourses();
-        }
+//            Courses = new List<Course>();
+//            Students = new List<Student>();
+//            LoadStudents();
+//            LoadCourses();
+//        }
 
-        private static void LoadCourses()
-        {
-            var course = new Course()
-            {
-                Id = 1,
-                Students = Students,
-                Credits = "15",
-                Name = "Pedagogik 1",
-                Term = "VT",
-                Year = "2015",
-                Active = true
-            };
-            Courses.Add(course);
+//        private static void LoadCourses()
+//        {
+//            var course = new Course()
+//            {
+//                Id = 1,
+//                Students = Students,
+//                Credits = "15",
+//                Name = "Pedagogik 1",
+//                Term = "VT",
+//                Year = "2015",
+//                Active = true
+//            };
+//            Courses.Add(course);
 
-            course = new Course()
-            {
-                Id = 2,
-                Credits = "10",
-                Name = "Pedagogik 2",
-                Term = "VT",
-                Year = "2015",
-                Active = true
-            };
-            Courses.Add(course);
+//            course = new Course()
+//            {
+//                Id = 2,
+//                Credits = "10",
+//                Name = "Pedagogik 2",
+//                Term = "VT",
+//                Year = "2015",
+//                Active = true
+//            };
+//            Courses.Add(course);
 
-            course = new Course()
-            {
-                Id = 3,
-                Credits = "5",
-                Name = "Datalogi 1",
-                Term = "VT",
-                Year = "2015",
-                Active = true
-            };
-            Courses.Add(course);
+//            course = new Course()
+//            {
+//                Id = 3,
+//                Credits = "5",
+//                Name = "Datalogi 1",
+//                Term = "VT",
+//                Year = "2015",
+//                Active = true
+//            };
+//            Courses.Add(course);
 
-            course = new Course()
-            {
-                Id = 4,
-                Credits = "7,5",
-                Name = "Filosofi 1",
-                Term = "VT",
-                Year = "2015",
-                Active = true
-            };
-            Courses.Add(course);
-        }
+//            course = new Course()
+//            {
+//                Id = 4,
+//                Credits = "7,5",
+//                Name = "Filosofi 1",
+//                Term = "VT",
+//                Year = "2015",
+//                Active = true
+//            };
+//            Courses.Add(course);
+//        }
         
-        private static void LoadStudents()
-        {
-            var student = new Student
-            {
-                Id = 1,
-                FirstName = "Kalle",
-                LastName = "Bengtsson",
-                Ssn = "800224 - 0121",
-                Active = true
-            };
-            Students.Add(student);
+//        private static void LoadStudents()
+//        {
+//            var student = new Student
+//            {
+//                Id = 1,
+//                FirstName = "Kalle",
+//                LastName = "Bengtsson",
+//                Ssn = "800224 - 0121",
+//                Active = true
+//            };
+//            Students.Add(student);
 
-            student = new Student
-            {
-                Id = 2,
-                FirstName = "Eva",
-                LastName = "Andersson",
-                Ssn = "840224 - 3321",
-                Active = true
-            };
-            Students.Add(student);
+//            student = new Student
+//            {
+//                Id = 2,
+//                FirstName = "Eva",
+//                LastName = "Andersson",
+//                Ssn = "840224 - 3321",
+//                Active = true
+//            };
+//            Students.Add(student);
 
-            student = new Student
-            {
-                Id = 3,
-                FirstName = "Ylva",
-                LastName = "Nordsson",
-                Ssn = "600314 - 2121",
-                Active = true
-            };
-            Students.Add(student);
+//            student = new Student
+//            {
+//                Id = 3,
+//                FirstName = "Ylva",
+//                LastName = "Nordsson",
+//                Ssn = "600314 - 2121",
+//                Active = true
+//            };
+//            Students.Add(student);
 
-            student = new Student
-            {
-                Id = 4,
-                FirstName = "Evy",
-                LastName = "Carlsson",
-                Ssn = "830211 - 6851",
-                Active = true
-            };
-            Students.Add(student);
+//            student = new Student
+//            {
+//                Id = 4,
+//                FirstName = "Evy",
+//                LastName = "Carlsson",
+//                Ssn = "830211 - 6851",
+//                Active = true
+//            };
+//            Students.Add(student);
 
-            student = new Student
-            {
-                Id = 5,
-                FirstName = "Lisa",
-                LastName = "Olofsson",
-                Ssn = "890921 - 0001",
-                Active = true
-            };
-            Students.Add(student);
+//            student = new Student
+//            {
+//                Id = 5,
+//                FirstName = "Lisa",
+//                LastName = "Olofsson",
+//                Ssn = "890921 - 0001",
+//                Active = true
+//            };
+//            Students.Add(student);
 
-            student = new Student
-            {
-                Id = 6,
-                FirstName = "Robert",
-                LastName = "Tovek",
-                Ssn = "900714 - 6541",
-                Active = true
-            };
-            Students.Add(student);
+//            student = new Student
+//            {
+//                Id = 6,
+//                FirstName = "Robert",
+//                LastName = "Tovek",
+//                Ssn = "900714 - 6541",
+//                Active = true
+//            };
+//            Students.Add(student);
         }
     }
 }

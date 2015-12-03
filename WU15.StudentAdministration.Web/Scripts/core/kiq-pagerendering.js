@@ -1,5 +1,4 @@
 ﻿
-
 var Page = new function Page() {
     var configuration = null;
 
@@ -74,8 +73,6 @@ var Page = new function Page() {
         var view = "";
         configuration.defaultPlaceholder.empty();
 
-
-
         var courseIndex = 0;
         for (var contentIndex = 0; contentIndex < courses.length; contentIndex = contentIndex + configuration.numberOfColumnsPerRow) {
             var item = "<div class='row list-item'>";
@@ -102,9 +99,14 @@ var Page = new function Page() {
                         + courses[courseIndex].id + "'></span>&nbsp;" // The edit icon.
                         + courses[courseIndex].name
                         + "</a>";
-                    item += "<p class='list-group-item course-item-info'>Kursstart " + courses[courseIndex].term + " " + courses[courseIndex].year + "</p>";
 
-
+                    if (courses[courseIndex].students.length >= 2) {
+                        item += "<p class='list-group-item course-item-info'>Kursstart " + courses[courseIndex].term + " " + courses[courseIndex].year + "&nbsp&nbsp&nbsp" + courses[courseIndex].students.length + " registrerade studenter</p>";
+                    } else if (courses[courseIndex].students.length >= 1) {
+                        item += "<p class='list-group-item course-item-info'>Kursstart " + courses[courseIndex].term + " " + courses[courseIndex].year + "&nbsp&nbsp&nbsp" + courses[courseIndex].students.length + " registrerad student</p>";
+                    } else if (courses[courseIndex].students.length === 0) {
+                        item += "<p class='list-group-item course-item-info'>Kursstart " + courses[courseIndex].term + " " + courses[courseIndex].year + "&nbsp&nbsp&nbsp studenter saknas</p>";
+                    }
                 } else {
                     item += "<div class='list-group courseInactive'>";
                     item += "<a href='#' class='list-group-item active data-course-item' title='Aktivera kursen för att visa studenterna.'>"
@@ -128,9 +130,9 @@ var Page = new function Page() {
                         // Displays active/inactive students
                         if (sortedByName[subIndex].active) {
 
-                            item += "<a href='#' class='list-group-item'>" + sortedByName[subIndex].firstName + " " + courses[courseIndex].students[subIndex].lastName + "<span class='ssnDefaultView'>" + courses[courseIndex].students[subIndex].ssn + "</span></a>";
+                            item += "<a href='#' class='list-group-item studentInCourseDefaultView'>" + sortedByName[subIndex].firstName + " " + courses[courseIndex].students[subIndex].lastName + "<span class='ssnDefaultView'>" + courses[courseIndex].students[subIndex].ssn + "</span></a>";
                         } else {
-                            item += "<a href='#' class='list-group-item inactiveStudent'>" + sortedByName[subIndex].firstName + " " + courses[courseIndex].students[subIndex].lastName + "<span class='ssnDefaultView'>" + courses[courseIndex].students[subIndex].ssn + "</span></a>";
+                            item += "<a href='#' class='list-group-item inactiveStudent'>" + sortedByName[subIndex].firstName + " " + courses[courseIndex].students[subIndex].lastName + "&nbsp&nbsp"+ "är inaktiv<span class='ssnDefaultView'>" + courses[courseIndex].students[subIndex].ssn + "</span></a>";
                         }
                     }
                 } else {
@@ -141,12 +143,9 @@ var Page = new function Page() {
                 item += "</div>";
                 item += "</div>";
             }
-
             item += "</div>";
             view += item;
-                                               
         }
-               
         
         // Append the html content to the div.
         configuration.defaultPlaceholder.append(view);
@@ -187,9 +186,7 @@ var Page = new function Page() {
                 view += "</tr>";
             }
         }
-
         tbody.append(view);
-
         configuration.courseListPlaceholder.fadeIn(500);
        
     }
@@ -227,14 +224,11 @@ var Page = new function Page() {
                     view += "<td><input data-studentId='" + students[index].id + "' class='aiCheckbox' type='checkbox' name='studentStatus' value='Student' ><span class='spanActive'>Aktiv</span><span title='Redigera student.' data-editId='" + students[index].id + "' href='#' class='glyphicon glyphicon-edit'></span></td>";
                     view += "</tr>";
                 }
-
-                 
             }
-
         }
         tbody.append(view);
-
         configuration.studentListPlaceholder.fadeIn(500);
+
     }
 
     Page.displayCourseDetails = function (id) {
@@ -287,7 +281,7 @@ var Page = new function Page() {
 
                 var sortedByName = sortByStudentName(course.students);
 
-                // Show student in list if active
+                // Show active and inactive students in list 
                 if (sortedByName[index].active) {
 
                     configuration.courseDetailsStudentListPlaceholder.append(
@@ -299,11 +293,8 @@ var Page = new function Page() {
                         + course.students[index].lastName
                         + "' data-ssn='"
                         + course.students[index].ssn
-
-                        
                         + "' data-active='"
                         + course.students[index].active
-
                         + "'>"
                         + course.students[index].firstName
                         + " "
@@ -314,7 +305,6 @@ var Page = new function Page() {
                         // Render the trash can, the remove student button.
                         + "<span class='pull-right'><button class='remove-registered-student btn btn-xs btn-warning'>"
                         + "<span class='glyphicon glyphicon-trash'></span></button></span></div>"
-
                         + "</div>");
                 } else {
                     configuration.courseDetailsStudentListPlaceholder.append(
@@ -326,10 +316,8 @@ var Page = new function Page() {
                         + course.students[index].lastName
                         + "' data-ssn='"
                         + course.students[index].ssn
-
                         + "' data-active='"
                         + course.students[index].active
-
                         + "'>"
                         + course.students[index].firstName
                         + " "
@@ -340,7 +328,6 @@ var Page = new function Page() {
                         // Render the trash can, the remove student button.
                         + "<span class='pull-right'><button class='remove-registered-student btn btn-xs btn-warning'>"
                         + "<span class='glyphicon glyphicon-trash'></span></button></span></div>"
-
                         + "</div>");
                 }
             }
@@ -349,6 +336,7 @@ var Page = new function Page() {
                 .courseDetailsStudentListPlaceholder
                 .append("<div>Inga studenter registrerade.</div>");
         }
+
     }
 
     Page.renderCourseDetailsStudentSelectList = function () {
@@ -385,14 +373,12 @@ var Page = new function Page() {
         for (var i = 0; i < studentInList.length; i++) {
             var studentId = studentInList[i].getAttribute("data-id");
 
-            studentIdl = student.id.toString();
+            studentIdString = student.id.toString();
 
-            if (studentIdl === studentId) {
+            if (studentIdString === studentId) {
                 
                 var StudentInRegisteredList = true;
-
             }
-
         }
         
         if (!StudentInRegisteredList || trashCanEventTrigger) {
@@ -408,10 +394,8 @@ var Page = new function Page() {
                .attr("data-last-name", student.lastName)
                .attr("data-ssn", student.ssn)
                .attr("data-active", student.active));
-
         }
-           
-            
+
     }
 
     // Saves a course and displays the default view.
@@ -457,7 +441,7 @@ var Page = new function Page() {
             error: function (jqXHR, textStatus, errorThrown) {
             }
         });
-        //Page.displayDefault();
+        
     }
 
     // Adds student to course in course details.
@@ -476,10 +460,8 @@ var Page = new function Page() {
                             + student.lastName
                             + "' data-ssn='"
                             + student.ssn
-
                             + "' data-active='"
                             + student.active
-
                             + "'>"
                             + student.firstName
                             + " "
@@ -490,7 +472,6 @@ var Page = new function Page() {
 
                             // Render the trash can remove student button.
                             + "<span class='pull-right'><button class='remove-registered-student btn btn-xs btn-warning'><span class='glyphicon glyphicon-trash'></span></button></span></div>"
-
                             + "</div>");
             } else {
                 configuration.courseDetailsStudentListPlaceholder.append(
@@ -502,10 +483,8 @@ var Page = new function Page() {
                             + student.lastName
                             + "' data-ssn='"
                             + student.ssn
-
                             + "' data-active='"
                             + student.active
-
                             + "'>"
                             + student.firstName
                             + " "
@@ -516,41 +495,14 @@ var Page = new function Page() {
 
                             // Render the trash can remove student button.
                             + "<span class='pull-right'><button class='remove-registered-student btn btn-xs btn-warning'><span class='glyphicon glyphicon-trash'></span></button></span></div>"
-
                             + "</div>");
             }
- 
-        }
-    }
-
-    Page.getCourseTemplate = function () {
-        var course = {
-            id: 0,
-            name: "",
-            credits: 0,
-            active: true,
-            students: []
         }
 
-        return course;
-    }
-
-    Page.getStudentTemplate = function () {
-        var student = {
-            id: 0,
-            name: "",
-            lastname: "",
-            ssn: "",
-            active: true
-        }
-
-        return student;
     }
 
     Page.saveStudentDetails = function (student) {
-
-        student.active = true;
-
+        debugger;
         $.ajax({
             url: configuration.studentsUrl,
             type: "POST",
@@ -569,7 +521,6 @@ var Page = new function Page() {
             error: function (jqXHR, textStatus, errorThrown) {
             }
         });
-        
        
     }
 
@@ -598,6 +549,7 @@ var Page = new function Page() {
         Page.appendStudentToList(student);
 
         console.log("Registring student having id " + id + "." + active);
+
     }
 
     Page.navigate = function (panel) {
@@ -633,7 +585,6 @@ var Page = new function Page() {
                 clearSearchStudentBox();
                 resetActiveColor();
                 resetMenuText();
-               
                 
                 Page.displayStudentList();
                 configuration.studentListFormPlaceholder.hide();
@@ -642,8 +593,8 @@ var Page = new function Page() {
             default:
                 configuration.courseDetailsPlaceholder.hide();
                 Page.displayDefault();
-                
         }
+
     }
 
     Page.deselectMenu = function () {
@@ -687,7 +638,6 @@ var Page = new function Page() {
             type: "GET",
             url: configuration.studentsUrl + id
         }).done(function (data) {
-            //console.log("[Page.displayStudentList]: Number of items returned: " + data.length);
 
             var student = data;
             student.active = status;
@@ -724,7 +674,7 @@ var Page = new function Page() {
 
     // Changes Course Status Value
     Page.changeCourseStatusValue = function (id ,status) {
-        //debugger;
+       
         $.ajax({
             type: "GET",
             url: configuration.coursesUrl + id
@@ -740,6 +690,7 @@ var Page = new function Page() {
         });
 
     }
+
     // Saves Course Active/Inactive Status Details
     Page.saveCourseActiveStatusDetails = function (course) {
 
@@ -753,11 +704,11 @@ var Page = new function Page() {
 
                 Page.displayCourseList();
 
-
             },
             error: function (jqXHR, textStatus, errorThrown) {
             }
         });
+
     }
 
     Page.SearchStudent = function (searchString) {
@@ -772,6 +723,7 @@ var Page = new function Page() {
         }).error(function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.responseText || textStatus);
         });
+
     }
 
     return Page;

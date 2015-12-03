@@ -77,13 +77,23 @@
         // Save the student details.
         $("#studentListForm").submit(function (event) {
             event.preventDefault();
-            console.log("[studentDetailsForm.submit]: Submitted course details form.");
+            console.log("[studentDetailsForm.submit]: Submitted student details form.");
 
-            var student = Utilities.formToJson(this);
+            //alert($('input:hidden[name=active]').val());
+            //alert(document.getElementById('konj').value);
             
-            //debugger;
+            var student = Utilities.formToJson(this);
+            cleareditStudentBox();
 
             Page.saveStudentDetails(student);
+        });
+
+        // Clear student details
+        $("#clearStudentDetails").on("click", function (event) {
+            event.preventDefault();
+            console.log("[studentDetailsForm.submit]: Clear student details form.");
+
+            cleareditStudentBox();
         });
         
         // Remove a registered student from course and adds it to ddl
@@ -316,7 +326,6 @@
         }).ajaxStop(function () {
             $('#loadingDiv').hide(); // hide loading div
         });
-
 
     });
 

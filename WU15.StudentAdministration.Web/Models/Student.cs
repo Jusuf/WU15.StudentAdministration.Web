@@ -8,7 +8,6 @@ namespace WU15.StudentAdministration.Web.Models
         public string LastName { get; set; }
         public string Ssn { get; set; }
         public bool Active { get; set; }
-        
 
         public List<Course> Courses { get; set; }
     }
